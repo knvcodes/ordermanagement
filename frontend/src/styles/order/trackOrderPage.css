@@ -1,0 +1,66 @@
+.track-order-page {
+  @apply max-w-3xl mx-auto w-full flex flex-col gap-6;
+}
+
+.track-order-page-title {
+  @apply text-2xl font-bold text-dark;
+}
+
+.track-order-search {
+  @apply flex gap-2;
+}
+
+.track-order-input {
+  @apply flex-1 px-4 py-3 border border-gray-300 rounded-lg text-dark
+         transition-all focus:outline-none focus:ring-2 focus:ring-primary
+         focus:border-transparent;
+}
+
+.track-order-submit {
+  @apply bg-primary text-white font-semibold px-6 py-3 rounded-lg
+         transition-opacity hover:opacity-90;
+}
+
+.track-order-result {
+  @apply flex flex-col gap-6;
+}
+
+.track-order-status-card {
+  @apply bg-white rounded-xl border border-gray-100 p-6 flex flex-col gap-6;
+}
+
+.track-order-details {
+  @apply bg-white rounded-xl border border-gray-100 p-6 flex flex-col gap-3;
+}
+
+.track-order-details-title {
+  @apply text-lg font-bold text-dark;
+}
+
+.track-order-details-row {
+  @apply flex items-center justify-between gap-4 text-sm;
+}
+
+.track-order-details-row span {
+  @apply text-gray-600;
+}
+
+.track-order-details-row strong {
+  @apply text-dark text-right;
+}
+
+.track-order-details-divider {
+  @apply border-t border-dashed border-gray-200;
+}
+
+.track-order-details-total {
+  @apply text-base font-bold;
+}
+
+.track-order-details-total span {
+  @apply text-dark;
+}
+
+.track-order-details-total strong {
+  @apply text-secondary;
+}

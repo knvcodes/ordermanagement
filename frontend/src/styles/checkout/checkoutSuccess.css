@@ -1,0 +1,51 @@
+.checkout-success-overlay {
+  @apply fixed inset-0 z-50 bg-dark/60 flex items-center justify-center p-4;
+}
+
+.checkout-success {
+  @apply bg-white rounded-2xl p-8 max-w-md w-full flex flex-col items-center
+         text-center gap-4 shadow-2xl;
+}
+
+.checkout-success-icon {
+  @apply w-16 h-16 rounded-full bg-success text-white text-3xl font-bold
+         flex items-center justify-center;
+}
+
+.checkout-success-title {
+  @apply text-2xl font-bold text-dark;
+}
+
+.checkout-success-message {
+  @apply text-gray-600 text-sm;
+}
+
+.checkout-success-details {
+  @apply w-full flex flex-col gap-2 bg-light rounded-lg p-4;
+}
+
+.checkout-success-row {
+  @apply flex items-center justify-between text-sm;
+}
+
+.checkout-success-row span {
+  @apply text-gray-600;
+}
+
+.checkout-success-row strong {
+  @apply text-dark;
+}
+
+.checkout-success-actions {
+  @apply w-full flex flex-col gap-2 mt-2;
+}
+
+.checkout-success-track {
+  @apply w-full bg-primary text-white font-semibold py-3 rounded-lg
+         transition-opacity hover:opacity-90;
+}
+
+.checkout-success-menu {
+  @apply w-full bg-white text-dark font-semibold py-3 rounded-lg border
+         border-gray-300 transition-colors hover:bg-gray-50;
+}

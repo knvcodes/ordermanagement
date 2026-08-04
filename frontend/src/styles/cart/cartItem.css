@@ -1,0 +1,73 @@
+.cart-item {
+  @apply flex items-center gap-3 p-3 bg-white rounded-lg;
+}
+
+.cart-item-image {
+  @apply w-16 h-16 rounded-lg flex items-center justify-center flex-shrink-0;
+}
+
+.cart-item-image-pizza {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-warning));
+}
+
+.cart-item-image-burger {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+}
+
+.cart-item-image-pasta {
+  background: linear-gradient(135deg, var(--color-warning), var(--color-primary));
+}
+
+.cart-item-image-salad {
+  background: linear-gradient(135deg, var(--color-success), var(--color-accent));
+}
+
+.cart-item-image-dessert {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+}
+
+.cart-item-image-drink {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-success));
+}
+
+.cart-item-icon {
+  @apply text-3xl select-none;
+}
+
+.cart-item-details {
+  @apply flex-1 min-w-0;
+}
+
+.cart-item-name {
+  @apply text-sm font-semibold text-dark truncate;
+}
+
+.cart-item-price-each {
+  @apply text-xs text-gray-500;
+}
+
+.cart-item-controls {
+  @apply flex items-center justify-between mt-2;
+}
+
+.cart-item-stepper {
+  @apply flex items-center gap-1 bg-gray-100 rounded-md p-1;
+}
+
+.cart-item-step-btn {
+  @apply w-6 h-6 flex items-center justify-center rounded text-dark font-bold
+         transition-colors hover:bg-white;
+}
+
+.cart-item-step-value {
+  @apply w-5 text-center text-sm font-semibold text-dark;
+}
+
+.cart-item-total {
+  @apply text-sm font-bold text-secondary;
+}
+
+.cart-item-remove {
+  @apply self-start p-1 text-xl leading-none text-gray-400
+         transition-colors hover:text-danger;
+}

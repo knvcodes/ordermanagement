@@ -1,0 +1,19 @@
+.checkout-page {
+  @apply max-w-5xl mx-auto w-full flex flex-col gap-6;
+}
+
+.checkout-page-title {
+  @apply text-2xl font-bold text-dark;
+}
+
+.checkout-page-grid {
+  @apply grid grid-cols-1 lg:grid-cols-5 gap-6 items-start;
+}
+
+.checkout-page-form {
+  @apply lg:col-span-3;
+}
+
+.checkout-page-review {
+  @apply lg:col-span-2;
+}

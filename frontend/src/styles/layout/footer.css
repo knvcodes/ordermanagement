@@ -1,0 +1,31 @@
+.footer {
+  @apply bg-dark text-white mt-auto;
+}
+
+.footer-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center gap-4;
+}
+
+.footer-brand {
+  @apply text-center;
+}
+
+.footer-logo {
+  @apply text-xl font-bold text-primary;
+}
+
+.footer-tagline {
+  @apply text-gray-300 text-sm mt-1;
+}
+
+.footer-links {
+  @apply flex gap-6;
+}
+
+.footer-link {
+  @apply text-gray-300 hover:text-white transition-colors text-sm;
+}
+
+.footer-copyright {
+  @apply text-gray-400 text-xs;
+}

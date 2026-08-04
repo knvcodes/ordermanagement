@@ -1,0 +1,18 @@
+.category-filter {
+  @apply flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0;
+  scrollbar-width: none;
+}
+
+.category-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  @apply flex-shrink-0 px-5 py-2 rounded-full border border-gray-200 bg-white
+         text-dark font-medium text-sm transition-all duration-200
+         hover:border-primary hover:text-primary;
+}
+
+.category-pill-active {
+  @apply bg-primary text-white border-primary hover:text-white;
+}

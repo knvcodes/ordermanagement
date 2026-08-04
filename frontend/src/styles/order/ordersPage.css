@@ -1,0 +1,11 @@
+.orders-page {
+  @apply max-w-3xl mx-auto w-full flex flex-col gap-6;
+}
+
+.orders-page-title {
+  @apply text-2xl font-bold text-dark;
+}
+
+.orders-page-list {
+  @apply flex flex-col gap-4;
+}

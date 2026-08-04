@@ -1,0 +1,42 @@
+.cart-drawer-overlay {
+  @apply fixed inset-0 z-50 bg-dark/50 opacity-0 pointer-events-none
+         transition-opacity duration-300;
+}
+
+.cart-drawer-overlay-open {
+  @apply opacity-100 pointer-events-auto;
+}
+
+.cart-drawer {
+  @apply fixed top-0 right-0 h-full w-full max-w-md bg-light shadow-2xl
+         flex flex-col translate-x-full transition-transform duration-300 ease-in-out;
+}
+
+.cart-drawer-open {
+  @apply translate-x-0;
+}
+
+.cart-drawer-header {
+  @apply flex items-center justify-between px-4 py-4 bg-white border-b border-gray-100;
+}
+
+.cart-drawer-title {
+  @apply text-lg font-bold text-dark;
+}
+
+.cart-drawer-count {
+  @apply text-sm font-normal text-gray-500;
+}
+
+.cart-drawer-close {
+  @apply w-8 h-8 flex items-center justify-center rounded-full text-xl
+         text-gray-500 transition-colors hover:bg-gray-100 hover:text-dark;
+}
+
+.cart-drawer-body {
+  @apply flex-1 overflow-y-auto p-4 flex flex-col gap-3;
+}
+
+.cart-drawer-footer {
+  @apply p-4 bg-white border-t border-gray-100;
+}

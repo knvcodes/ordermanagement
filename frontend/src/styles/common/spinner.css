@@ -1,0 +1,26 @@
+.spinner-wrapper {
+  @apply flex items-center justify-center py-8;
+}
+
+.spinner {
+  @apply rounded-full border-4 border-gray-200 border-t-primary;
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+.spinner-sm {
+  @apply w-6 h-6;
+}
+
+.spinner-md {
+  @apply w-10 h-10;
+}
+
+.spinner-lg {
+  @apply w-16 h-16;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

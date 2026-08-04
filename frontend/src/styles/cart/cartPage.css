@@ -1,0 +1,27 @@
+.cart-page {
+  @apply flex justify-center;
+}
+
+.cart-page-content {
+  @apply w-full max-w-2xl flex flex-col gap-6;
+}
+
+.cart-page-header {
+  @apply flex items-center justify-between;
+}
+
+.cart-page-title {
+  @apply text-2xl font-bold text-dark;
+}
+
+.cart-page-clear {
+  @apply text-sm font-medium text-gray-500 transition-colors hover:text-danger;
+}
+
+.cart-page-items {
+  @apply flex flex-col gap-3;
+}
+
+.cart-page-summary-wrapper {
+  @apply mt-2;
+}

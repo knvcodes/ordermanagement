@@ -1,0 +1,51 @@
+.order-review {
+  @apply bg-white rounded-xl border border-gray-100 p-6 flex flex-col gap-3;
+}
+
+.order-review-title {
+  @apply text-lg font-bold text-dark;
+}
+
+.order-review-items {
+  @apply flex flex-col gap-2 list-none;
+}
+
+.order-review-item {
+  @apply flex items-center gap-2 text-sm;
+}
+
+.order-review-item-qty {
+  @apply text-gray-500 font-medium flex-shrink-0;
+}
+
+.order-review-item-name {
+  @apply flex-1 text-dark truncate;
+}
+
+.order-review-item-price {
+  @apply font-medium text-dark flex-shrink-0;
+}
+
+.order-review-divider {
+  @apply border-t border-dashed border-gray-200 my-1;
+}
+
+.order-review-row {
+  @apply flex items-center justify-between text-sm text-gray-600;
+}
+
+.order-review-total {
+  @apply text-base font-bold text-dark;
+}
+
+.order-review-eta {
+  @apply mt-2 flex items-center justify-between bg-light rounded-lg px-4 py-3 text-sm;
+}
+
+.order-review-eta span {
+  @apply text-gray-600;
+}
+
+.order-review-eta strong {
+  @apply text-secondary;
+}

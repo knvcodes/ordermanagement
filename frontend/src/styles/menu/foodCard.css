@@ -1,0 +1,95 @@
+.food-card {
+  @apply bg-white rounded-xl shadow-md overflow-hidden flex flex-col
+         transition-all duration-200 hover:shadow-xl hover:-translate-y-1;
+}
+
+.food-card-image {
+  @apply relative h-40 flex items-center justify-center;
+}
+
+.food-card-image-pizza {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-warning));
+}
+
+.food-card-image-burger {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+}
+
+.food-card-image-pasta {
+  background: linear-gradient(135deg, var(--color-warning), var(--color-primary));
+}
+
+.food-card-image-salad {
+  background: linear-gradient(135deg, var(--color-success), var(--color-accent));
+}
+
+.food-card-image-dessert {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+}
+
+.food-card-image-drink {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-success));
+}
+
+.food-card-icon {
+  @apply text-6xl drop-shadow-lg select-none;
+}
+
+.food-card-prep-time {
+  @apply absolute top-3 right-3 bg-dark/70 text-white text-xs font-semibold
+         px-2.5 py-1 rounded-full;
+}
+
+.food-card-body {
+  @apply flex flex-col flex-1 p-4 gap-2;
+}
+
+.food-card-name {
+  @apply text-lg font-semibold text-dark leading-snug;
+}
+
+.food-card-description {
+  @apply text-sm text-gray-500 line-clamp-2;
+}
+
+.food-card-stars {
+  @apply flex items-center gap-0.5 text-sm;
+}
+
+.star-filled {
+  @apply text-warning;
+}
+
+.star-empty {
+  @apply text-gray-300;
+}
+
+.food-card-rating-value {
+  @apply ml-1 text-gray-500 text-xs font-medium;
+}
+
+.food-card-footer {
+  @apply flex items-center justify-between mt-auto pt-2;
+}
+
+.food-card-price {
+  @apply text-xl font-bold text-secondary;
+}
+
+.food-card-add-btn {
+  @apply bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg
+         transition-opacity hover:opacity-90 active:opacity-80;
+}
+
+.food-card-stepper {
+  @apply flex items-center gap-1 bg-gray-100 rounded-lg p-1;
+}
+
+.stepper-btn {
+  @apply w-8 h-8 flex items-center justify-center rounded-md text-dark
+         font-bold text-lg transition-colors hover:bg-white hover:shadow;
+}
+
+.stepper-value {
+  @apply w-6 text-center font-semibold text-dark;
+}

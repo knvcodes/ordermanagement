@@ -1,0 +1,35 @@
+.delivery-form {
+  @apply bg-white rounded-xl border border-gray-100 p-6 flex flex-col gap-4;
+}
+
+.delivery-form-title {
+  @apply text-lg font-bold text-dark;
+}
+
+.delivery-form-field {
+  @apply flex flex-col gap-1;
+}
+
+.delivery-form-label {
+  @apply text-sm font-medium text-dark;
+}
+
+.delivery-form-input,
+.delivery-form-textarea {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg text-dark resize-none
+         transition-all focus:outline-none focus:ring-2 focus:ring-primary
+         focus:border-transparent;
+}
+
+.delivery-form-input-error {
+  @apply border-danger focus:ring-danger;
+}
+
+.delivery-form-error {
+  @apply text-xs text-danger;
+}
+
+.delivery-form-submit {
+  @apply mt-2 w-full bg-primary text-white font-semibold py-3 rounded-lg
+         transition-opacity hover:opacity-90 active:opacity-80;
+}

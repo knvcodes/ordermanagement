@@ -1,0 +1,30 @@
+.menu-page {
+  @apply flex flex-col gap-8;
+}
+
+.menu-page-hero {
+  @apply rounded-2xl px-6 py-12 sm:px-12 text-center text-white;
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+}
+
+.menu-page-title {
+  @apply text-3xl sm:text-4xl font-bold mb-2;
+}
+
+.menu-page-subtitle {
+  @apply text-gray-200 mb-6;
+}
+
+.menu-page-search {
+  @apply relative max-w-md mx-auto;
+}
+
+.menu-page-search-icon {
+  @apply absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400
+         pointer-events-none;
+}
+
+.menu-page-search-input {
+  @apply w-full pl-11 pr-4 py-3 rounded-full text-dark bg-white
+         focus:outline-none focus:ring-4 focus:ring-primary/40 transition-shadow;
+}

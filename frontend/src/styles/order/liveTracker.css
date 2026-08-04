@@ -1,0 +1,43 @@
+.live-tracker {
+  @apply flex items-center justify-between gap-4 bg-light rounded-lg px-4 py-3;
+}
+
+.live-tracker-status {
+  @apply flex items-center gap-3;
+}
+
+.live-tracker-dot {
+  @apply relative inline-flex w-3 h-3;
+}
+
+.live-tracker-dot-ping {
+  @apply absolute inset-0 rounded-full bg-primary opacity-75 animate-ping;
+}
+
+.live-tracker-dot-core {
+  @apply relative inline-flex w-3 h-3 rounded-full bg-primary;
+}
+
+.live-tracker-dot-core-delivered {
+  @apply bg-success;
+}
+
+.live-tracker-label {
+  @apply text-sm font-semibold text-dark;
+}
+
+.live-tracker-times {
+  @apply flex items-center gap-6;
+}
+
+.live-tracker-time {
+  @apply flex flex-col items-end;
+}
+
+.live-tracker-time-label {
+  @apply text-xs text-gray-500;
+}
+
+.live-tracker-time-value {
+  @apply text-sm font-bold text-secondary tabular-nums;
+}

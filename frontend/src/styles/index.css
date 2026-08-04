@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #ff6b35;
+  --color-secondary: #004e89;
+  --color-accent: #1a659e;
+  --color-success: #2ecc71;
+  --color-warning: #f1c40f;
+  --color-danger: #e74c3c;
+  --color-dark: #1a1a2e;
+  --color-light: #f8f9fa;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply box-border m-0 p-0;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+  }
+
+  body {
+    @apply bg-light text-dark min-h-screen;
+    line-height: 1.6;
+  }
+
+  img {
+    @apply max-w-full h-auto block;
+  }
+
+  a {
+    @apply no-underline;
+    color: inherit;
+  }
+
+  button {
+    @apply cursor-pointer border-none bg-transparent;
+    font: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-2 rounded-lg font-semibold
+      transition-colors duration-200 hover:opacity-90 active:opacity-80;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white px-6 py-2 rounded-lg font-semibold
+      transition-colors duration-200 hover:opacity-90 active:opacity-80;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md p-4 transition-shadow duration-200
+      hover:shadow-lg;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg
+      focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+      transition-all duration-200;
+  }
+}
