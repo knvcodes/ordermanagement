@@ -1,0 +1,89 @@
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+
+# health check
+GET {{baseUrl}}
+
+
+# AUTH
+
+### register owner
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "name": "james",
+  "email": "test@yopmail.com",
+  "password": "Test@123",
+  "role": "owner"
+}
+
+### login
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "john.smith@restaurant.com",
+  "password": "Owner@123"
+}
+
+### forgot password
+POST {{baseUrl}}/api/auth/forgotPassword
+Content-Type: {{contentType}}
+
+{
+  "email": "john.smith@restaurant.com"
+}
+
+### reset password
+POST {{baseUrl}}/api/auth/resetPassword
+Content-Type: {{contentType}}
+
+{ 
+  "token": "7d6bcbb355fc05faebe5dbe4441ebee882911733c345dc451e9afca48f9abf1a",
+  "newPassword": "Owner@1234",
+  "confirmPassword": "Owner@1234"
+}
+
+
+# RESTAURANT
+
+### Restaurant listing api
+GET {{baseUrl}}/api/restaurants/list
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiamFtZXMiLCJyb2xlIjpbIm93bmVyIl0sImlhdCI6MTc4MTU5Nzk5MywiZXhwIjoxNzgxNTk4NTkzfQ.h09nb0FuIS9GwtCMMMA0e3q6uVNH-8hzAh4ucAtmTsk
+
+### Restaurant by id
+GET {{baseUrl}}/api/restaurants/6a34fa7c84b8dea97574cc53
+
+
+
+# DISHES
+
+
+### Dish add api
+POST {{baseUrl}}/api/dishes/add
+Content-Type: {{contentType}}
+
+{
+  "restaurantId": "6a2ab2675e8f92e9f4bd31f4",
+  "name": "Chicken fry",
+  "description": "Roles with fresh cabbage, carrots, and glass noodles. Served with sweet chili sauce.",
+  "isActive": true,
+  "tags": ["nonveg", "appetizer", "crispy", "asian"],
+  "serving": [
+    {
+      "title": "9 Pieces",
+      "value": 2,
+      "price": 210,
+      "currency": "INR"
+    }
+  ]
+}
+
+### Dish listing api
+GET {{baseUrl}}/api/dishes/list?page=1&limit=10
+
+### Dish listing with search
+GET {{baseUrl}}/api/dishes/list?page=1&limit=10&search=chicken
