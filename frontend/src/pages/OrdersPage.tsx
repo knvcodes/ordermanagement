@@ -8,7 +8,6 @@ export default function OrdersPage() {
   const navigate = useNavigate();
 
   const orderState = useOrderData();
-  console.info("orderState:===>", orderState.orders);
 
   if (orderState.orders.length === 0) {
     return (

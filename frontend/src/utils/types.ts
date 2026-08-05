@@ -117,3 +117,17 @@ export interface MenuApiResponse {
     total: number;
   };
 }
+
+export interface OrderPlaceResponse {
+  message: string;
+  data: OrderPlacedData;
+}
+
+export interface OrderPlacedData {
+  userId: string;
+  totalAmount: number;
+  status: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+}

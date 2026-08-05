@@ -1,22 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import type { Order } from "../../utils/types";
-import { formatPrice } from "../../utils/helpers";
+import type { OrderPlacedData } from "../../utils/types";
+import { formatPrice, getRandomTime } from "../../utils/helpers";
 import "../../styles/checkout/checkoutSuccess.css";
 
-const DELIVERY_BUFFER_MINUTES = 15;
-
 interface CheckoutSuccessProps {
-  order: Order;
+  order: OrderPlacedData;
 }
 
 export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
   const navigate = useNavigate();
 
-  const maxPrepTime = order.items.reduce(
-    (max: number, item: { prepTime: number }) => Math.max(max, item.prepTime),
-    0,
-  );
-  const estimatedMinutes = maxPrepTime + DELIVERY_BUFFER_MINUTES;
+  const maxPrepTime = getRandomTime();
 
   return (
     <div className="checkout-success-overlay">
@@ -24,13 +18,13 @@ export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
         <div className="checkout-success-icon">✓</div>
         <h2 className="checkout-success-title">Order Confirmed!</h2>
         <p className="checkout-success-message">
-          Thank you, {order.deliveryInfo.name}. Your food is being prepared.
+          Thank you, Your food is being prepared.
         </p>
 
         <div className="checkout-success-details">
           <div className="checkout-success-row">
             <span>Order ID</span>
-            <strong>{order.id}</strong>
+            <strong>{order._id}</strong>
           </div>
           <div className="checkout-success-row">
             <span>Total Paid</span>
@@ -38,16 +32,14 @@ export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
           </div>
           <div className="checkout-success-row">
             <span>Estimated Delivery</span>
-            <strong>
-              {estimatedMinutes}–{estimatedMinutes + 10} min
-            </strong>
+            <strong>{maxPrepTime}</strong>
           </div>
         </div>
 
         <div className="checkout-success-actions">
           <button
             className="checkout-success-track"
-            onClick={() => navigate("/track")}
+            onClick={() => navigate(`/track?orderId=${order._id}`)}
           >
             Track Order
           </button>
