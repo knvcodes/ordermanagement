@@ -1,40 +1,61 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useCallback } from "react";
 import CategoryFilter from "../components/menu/CategoryFilter";
 import MenuGrid from "../components/menu/MenuGrid";
 import "../styles/menu/menuPage.css";
 import { useMenuData } from "@/service/menu/menu.providers";
 import Spinner from "@/components/common/Spinner";
-import { getRandomRating } from "@/utils/helpers";
+import { getRandomRating, useDebounce } from "@/utils/helpers";
+import { MenuItem2 } from "@/utils/types";
 
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const observer = useRef<IntersectionObserver | null>(null);
 
-  const { list, isLoading, error } = useMenuData();
-  console.info("menuList:===>", { list, isLoading, error });
+  const debouncedSearch = useDebounce(searchQuery, 800);
+
+  const {
+    list,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useMenuData({
+    search: debouncedSearch || undefined,
+    category: selectedCategory,
+  });
+
+  // ✅ IntersectionObserver to trigger next page fetch
+  const sentinelRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading || isFetchingNextPage) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, isFetchingNextPage, hasNextPage, fetchNextPage],
+  );
 
   const menuItems = useMemo(() => {
-    return (list?.data || []).map(
-      (item: { _id: any; id: any; rating: any; reviews: any }) => ({
+    // ✅ list is now a FLATTENED array (no more list.data)
+    if (list && list.length > 0) {
+      return list.map((item: MenuItem2) => ({
         ...item,
-        id: item._id || item.id,
-
-        rating: item.rating ?? getRandomRating(), // Defaults to 4.5 if missing
-        reviews: item.reviews ?? 128, // Defaults to 128 if missing
-      }),
-    );
+        id: item._id,
+        rating: getRandomRating(),
+        reviews: 128,
+      }));
+    }
+    return [];
   }, [list]);
 
-  // 3. Filter based on search query
-  const searchedItems = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    if (!query) return menuItems;
-    return menuItems.filter((item: { name: string }) =>
-      item.name.toLowerCase().includes(query),
-    );
-  }, [searchQuery, menuItems]);
-
-  // 4. Handle Loading State
   if (isLoading) {
     return (
       <div className="menu-page">
@@ -47,7 +68,6 @@ export default function MenuPage() {
     );
   }
 
-  // 5. Handle Error State
   if (error) {
     return (
       <div className="menu-page">
@@ -98,7 +118,24 @@ export default function MenuPage() {
         onSelectCategory={setSelectedCategory}
       />
 
-      <MenuGrid items={searchedItems} selectedCategory={selectedCategory} />
+      <MenuGrid items={menuItems} selectedCategory={selectedCategory} />
+
+      {/* ✅ Sentinel element — triggers next page when scrolled into view */}
+      <div ref={sentinelRef} style={{ height: "1px" }} />
+
+      {isFetchingNextPage && (
+        <div
+          style={{ display: "flex", justifyContent: "center", padding: "20px" }}
+        >
+          <Spinner />
+        </div>
+      )}
+
+      {!hasNextPage && menuItems.length > 0 && (
+        <p style={{ textAlign: "center", color: "#888", padding: "20px" }}>
+          You've reached the end of the menu!
+        </p>
+      )}
     </div>
   );
 }

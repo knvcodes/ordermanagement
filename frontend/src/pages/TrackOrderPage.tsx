@@ -1,5 +1,6 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { formatPrice } from "../utils/helpers";
 import StatusTimeline from "../components/order/StatusTimeline";
 import LiveTracker from "../components/order/LiveTracker";
@@ -7,21 +8,35 @@ import EmptyState from "../components/common/EmptyState";
 import "../styles/order/trackOrderPage.css";
 import { useOrderDetailsData } from "@/service/orders/orders.providers";
 
+interface TrackFormInputs {
+  orderId: string;
+}
+
 export default function TrackOrderPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const paramId = searchParams.get("orderId");
-  const [inputValue, setInputValue] = useState(paramId ?? "");
 
+  // Initialize React Hook Form
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<TrackFormInputs>({
+    defaultValues: {
+      orderId: paramId ?? "",
+    },
+  });
+
+  // Sync form value if URL param changes (e.g., user clicks browser back/forward)
   useEffect(() => {
-    setInputValue(paramId ?? "");
-  }, [paramId]);
+    setValue("orderId", paramId ?? "");
+  }, [paramId, setValue]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const id = inputValue.trim();
-    if (id) {
-      setSearchParams({ orderId: id });
-    }
+  // Handle valid form submission
+  const onSubmit = (data: TrackFormInputs) => {
+    const trimmedId = data.orderId.trim();
+    setSearchParams({ orderId: trimmedId });
   };
 
   // 1. Fetch data from the API hook
@@ -31,15 +46,31 @@ export default function TrackOrderPage() {
     <div className="track-order-page">
       <h1 className="track-order-page-title">Track Your Order</h1>
 
-      <form className="track-order-search" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="track-order-input"
-          placeholder="Enter your order ID (e.g., ORD-XXXX)"
-          value={inputValue}
-          onChange={(event) => setInputValue(event.target.value)}
-          aria-label="Order ID"
-        />
+      <form className="track-order-search" onSubmit={handleSubmit(onSubmit)}>
+        {/* Wrapper to keep flex layout intact while showing error messages */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <input
+            type="text"
+            className="track-order-input"
+            placeholder="Enter 24-character Order ID (e.g., 6a72fd...)"
+            {...register("orderId", {
+              required: "Order ID is required",
+              validate: (val) =>
+                /^[0-9a-fA-F]{24}$/.test(val.trim()) ||
+                "Invalid format: must be a 24-character hexadecimal string",
+            })}
+            aria-label="Order ID"
+          />
+          {errors.orderId && (
+            <span
+              className="track-order-error"
+              style={{ color: "#ef4444", fontSize: "0.8rem", marginTop: "4px" }}
+            >
+              {errors.orderId.message}
+            </span>
+          )}
+        </div>
+
         <button
           type="submit"
           className="track-order-submit"

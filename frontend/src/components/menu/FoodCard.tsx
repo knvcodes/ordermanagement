@@ -1,6 +1,10 @@
-import type { MenuItem } from "../../utils/types";
+import type { MenuItem2 } from "../../utils/types";
 import { useCartStore } from "../../store/cartStore";
-import { formatPrice, getRandomTime } from "../../utils/helpers";
+import {
+  formatPrice,
+  getRandomRating,
+  getRandomTime,
+} from "../../utils/helpers";
 import "../../styles/menu/foodCard.css";
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -13,7 +17,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 };
 
 interface FoodCardProps {
-  item: MenuItem;
+  item: MenuItem2;
 }
 
 function RatingStars({ rating }: { rating: number }) {
@@ -32,7 +36,7 @@ function RatingStars({ rating }: { rating: number }) {
 
 export default function FoodCard({ item }: FoodCardProps) {
   const cartItem = useCartStore((state) =>
-    state.items.find((i) => i.id === item.id),
+    state.items.find((i) => i._id === item._id),
   );
   const addItem = useCartStore((state) => state.addItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -51,7 +55,7 @@ export default function FoodCard({ item }: FoodCardProps) {
       <div className="food-card-body">
         <h3 className="food-card-name">{item.name}</h3>
         <p className="food-card-description">{item.description}</p>
-        <RatingStars rating={item.rating} />
+        <RatingStars rating={getRandomRating()} />
 
         <div className="food-card-footer">
           <span className="food-card-price">{formatPrice(item.price)}</span>
@@ -60,7 +64,7 @@ export default function FoodCard({ item }: FoodCardProps) {
             <div className="food-card-stepper">
               <button
                 className="stepper-btn"
-                onClick={() => updateQuantity(item.id, cartItem.quantity - 1)}
+                onClick={() => updateQuantity(item._id, cartItem.quantity - 1)}
                 aria-label="Decrease quantity"
               >
                 −

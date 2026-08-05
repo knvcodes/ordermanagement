@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { CartItem, MenuItem } from "../utils/types";
+import type { CartItem, MenuItem2 } from "../utils/types";
 
 interface CartState {
   items: CartItem[];
-  addItem: (menuItem: MenuItem) => void;
+  addItem: (menuItem: MenuItem2) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -19,11 +19,11 @@ export const useCartStore = create<CartState>()(
 
       addItem: (menuItem) =>
         set((state) => {
-          const existing = state.items.find((i) => i.id === menuItem.id);
+          const existing = state.items.find((i) => i._id === menuItem._id);
           if (existing) {
             return {
               items: state.items.map((i) =>
-                i.id === menuItem.id ? { ...i, quantity: i.quantity + 1 } : i,
+                i._id === menuItem._id ? { ...i, quantity: i.quantity + 1 } : i,
               ),
             };
           }
@@ -32,17 +32,17 @@ export const useCartStore = create<CartState>()(
 
       removeItem: (itemId) =>
         set((state) => ({
-          items: state.items.filter((i) => i.id !== itemId),
+          items: state.items.filter((i) => i._id !== itemId),
         })),
 
       updateQuantity: (itemId, quantity) =>
         set((state) => {
           if (quantity <= 0) {
-            return { items: state.items.filter((i) => i.id !== itemId) };
+            return { items: state.items.filter((i) => i._id !== itemId) };
           }
           return {
             items: state.items.map((i) =>
-              i.id === itemId ? { ...i, quantity } : i,
+              i._id === itemId ? { ...i, quantity } : i,
             ),
           };
         }),

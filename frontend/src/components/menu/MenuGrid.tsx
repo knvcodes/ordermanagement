@@ -1,11 +1,11 @@
-import type { MenuItem } from "../../utils/types";
+import type { MenuItem2 } from "../../utils/types";
 import { filterByCategory } from "../../utils/helpers";
 import FoodCard from "./FoodCard";
 import EmptyState from "../common/EmptyState";
 import "../../styles/menu/menuGrid.css";
 
 interface MenuGridProps {
-  items: MenuItem[];
+  items: MenuItem2[];
   selectedCategory: string;
 }
 
@@ -24,8 +24,7 @@ export default function MenuGrid({ items, selectedCategory }: MenuGridProps) {
   return (
     <div className="menu-grid">
       {filteredItems.map((item) => (
-        // Fallback to _id if id is missing from the mapped object
-        <FoodCard key={item.id} item={item} />
+        <FoodCard key={item._id} item={item} />
       ))}
     </div>
   );

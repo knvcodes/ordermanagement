@@ -1,4 +1,5 @@
-import type { CartItem, MenuItem } from "../utils/types";
+import { useEffect, useState } from "react";
+import type { CartItem, MenuItem, MenuItem2 } from "../utils/types";
 
 /**
  * Formats a price in cents to a display string like "$14.99"
@@ -48,9 +49,9 @@ export function groupByCategory(items: MenuItem[]): Record<string, MenuItem[]> {
  * Filters menu items by category. Returns all items when category is 'All'.
  */
 export function filterByCategory(
-  items: MenuItem[],
+  items: MenuItem2[],
   category: string,
-): MenuItem[] {
+): MenuItem2[] {
   if (category === "All") return items;
   return items.filter((item) => item.category === category);
 }
@@ -66,3 +67,17 @@ export const getRandomTime = (): string => {
     Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
   return `${randomMinutes} mins`;
 };
+
+export function useDebounce<T>(value: T, delay: number = 300): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}

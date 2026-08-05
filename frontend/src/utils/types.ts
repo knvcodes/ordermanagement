@@ -9,10 +9,6 @@ export interface MenuItem {
   prepTime: number; // minutes
 }
 
-export interface CartItem extends MenuItem {
-  quantity: number;
-}
-
 export type OrderStatus =
   | "ORDER_RECEIVED"
   | "PREPARING"
@@ -82,4 +78,42 @@ interface Delivery {
   name: string;
   phone: string;
   address: string;
+}
+
+export interface MenuListParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  category: string;
+}
+
+export interface MenuResponse<T = unknown> {
+  data: T;
+}
+
+export interface MenuItem2 {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  isAvailable: boolean;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CartItem extends MenuItem2 {
+  quantity: number;
+}
+
+export interface MenuApiResponse {
+  message: string;
+  data: {
+    data: MenuItem2[];
+    hasNext: boolean;
+    page: string;
+    total: number;
+  };
 }
