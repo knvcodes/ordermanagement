@@ -1,18 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import type { Order, OrderStatus } from "../../utils/types";
+import type { OrderReal, OrderStatus } from "../../utils/types";
 import { ORDER_STATUS_LABELS } from "../../utils/staticData";
 import { formatPrice } from "../../utils/helpers";
 import "../../styles/order/orderCard.css";
 
 const STATUS_BADGE_CLASSES: Record<OrderStatus, string> = {
-  received: "order-card-badge-received",
-  preparing: "order-card-badge-preparing",
-  out_for_delivery: "order-card-badge-out-for-delivery",
-  delivered: "order-card-badge-delivered",
+  ORDER_RECEIVED: "order-card-badge-received",
+  PREPARING: "order-card-badge-preparing",
+  OUT_FOR_DELIVERY: "order-card-badge-out-for-delivery",
+  DELIVERED: "order-card-badge-delivered",
+  CANCELLED: "order-card-badge-cancelled",
 };
 
 interface OrderCardProps {
-  order: Order;
+  order: OrderReal;
 }
 
 export default function OrderCard({ order }: OrderCardProps) {
@@ -30,7 +31,7 @@ export default function OrderCard({ order }: OrderCardProps) {
     <article className="order-card">
       <div className="order-card-header">
         <div>
-          <h3 className="order-card-id">{order.id}</h3>
+          <h3 className="order-card-id">{order._id}</h3>
           <span className="order-card-date">{formattedDate}</span>
         </div>
         <span
@@ -42,7 +43,7 @@ export default function OrderCard({ order }: OrderCardProps) {
 
       <p className="order-card-items">
         {totalItems} {totalItems === 1 ? "item" : "items"} —{" "}
-        {order.items.map((item) => item.name).join(", ")}
+        {order.items.map((item) => item.itemName).join(", ")}
       </p>
 
       <div className="order-card-footer">
@@ -51,7 +52,7 @@ export default function OrderCard({ order }: OrderCardProps) {
         </span>
         <button
           className="order-card-track-btn"
-          onClick={() => navigate(`/track?orderId=${order.id}`)}
+          onClick={() => navigate(`/track?orderId=${order._id}`)}
         >
           Track
         </button>

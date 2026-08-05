@@ -1,6 +1,6 @@
 import type { MenuItem } from "../../utils/types";
 import { useCartStore } from "../../store/cartStore";
-import { formatPrice } from "../../utils/helpers";
+import { formatPrice, getRandomTime } from "../../utils/helpers";
 import "../../styles/menu/foodCard.css";
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -45,7 +45,7 @@ export default function FoodCard({ item }: FoodCardProps) {
         <span className="food-card-icon" role="img" aria-label={item.category}>
           {CATEGORY_ICONS[item.category] ?? "🍽️"}
         </span>
-        <span className="food-card-prep-time">{item.prepTime} min</span>
+        <span className="food-card-prep-time">{getRandomTime()}</span>
       </div>
 
       <div className="food-card-body">

@@ -24,6 +24,7 @@ export default function MenuGrid({ items, selectedCategory }: MenuGridProps) {
   return (
     <div className="menu-grid">
       {filteredItems.map((item) => (
+        // Fallback to _id if id is missing from the mapped object
         <FoodCard key={item.id} item={item} />
       ))}
     </div>

@@ -1,7 +1,8 @@
-import { useNavigate } from 'react-router-dom';
-import { useCartStore } from '../../store/cartStore';
-import { calculateCartTotal, formatPrice } from '../../utils/helpers';
-import '../../styles/cart/cartSummary.css';
+import { useNavigate } from "react-router-dom";
+import { useCartStore } from "../../store/cartStore";
+import { calculateCartTotal, formatPrice } from "../../utils/helpers";
+import "../../styles/cart/cartSummary.css";
+import { useUiStore } from "@/store/uiStore";
 
 const DELIVERY_FEE = 299; // cents
 const TAX_RATE = 0.08;
@@ -13,6 +14,8 @@ export default function CartSummary() {
   const subtotal = calculateCartTotal(items);
   const tax = Math.round(subtotal * TAX_RATE);
   const total = subtotal + DELIVERY_FEE + tax;
+
+  const toggleCart = useUiStore((state) => state.toggleCart);
 
   return (
     <div className="cart-summary">
@@ -40,7 +43,10 @@ export default function CartSummary() {
 
       <button
         className="cart-summary-checkout"
-        onClick={() => navigate('/checkout')}
+        onClick={() => {
+          navigate("/checkout");
+          toggleCart();
+        }}
       >
         Proceed to Checkout
       </button>

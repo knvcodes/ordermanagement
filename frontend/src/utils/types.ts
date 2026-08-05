@@ -14,10 +14,11 @@ export interface CartItem extends MenuItem {
 }
 
 export type OrderStatus =
-  | "received"
-  | "preparing"
-  | "out_for_delivery"
-  | "delivered";
+  | "ORDER_RECEIVED"
+  | "PREPARING"
+  | "OUT_FOR_DELIVERY"
+  | "DELIVERED"
+  | "CANCELLED";
 
 export interface DeliveryInfo {
   name: string;
@@ -33,4 +34,52 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
   totalAmount: number; // cents
+}
+
+export interface OrderReal {
+  _id: string;
+  userId: string;
+  totalAmount: number;
+  status: OrderStatus;
+  delivery: Delivery;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  items: OrderItem[];
+}
+
+interface OrderItem {
+  _id: string;
+  orderId: string;
+  menuItemId: string;
+  itemName: string;
+  itemPrice: number;
+  quantity: number;
+  subtotal: number;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Delivery {
+  name: string;
+  phone: string;
+  address: string;
+}
+
+export interface OrderPayload {
+  userId: string;
+  delivery: Delivery;
+  items: orderItem[];
+}
+
+interface orderItem {
+  menuItemId: string;
+  quantity: number;
+}
+
+interface Delivery {
+  name: string;
+  phone: string;
+  address: string;
 }

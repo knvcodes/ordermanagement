@@ -1,18 +1,65 @@
 import { useMemo, useState } from "react";
-import { MENU_ITEMS } from "../utils/staticData";
 import CategoryFilter from "../components/menu/CategoryFilter";
 import MenuGrid from "../components/menu/MenuGrid";
 import "../styles/menu/menuPage.css";
+import { useMenuData } from "@/service/menu/menu.providers";
+import Spinner from "@/components/common/Spinner";
+import { getRandomRating } from "@/utils/helpers";
 
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { list, isLoading, error } = useMenuData();
+  console.info("menuList:===>", { list, isLoading, error });
+
+  const menuItems = useMemo(() => {
+    return (list?.data || []).map(
+      (item: { _id: any; id: any; rating: any; reviews: any }) => ({
+        ...item,
+        id: item._id || item.id,
+
+        rating: item.rating ?? getRandomRating(), // Defaults to 4.5 if missing
+        reviews: item.reviews ?? 128, // Defaults to 128 if missing
+      }),
+    );
+  }, [list]);
+
+  // 3. Filter based on search query
   const searchedItems = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    if (!query) return MENU_ITEMS;
-    return MENU_ITEMS.filter((item) => item.name.toLowerCase().includes(query));
-  }, [searchQuery]);
+    if (!query) return menuItems;
+    return menuItems.filter((item: { name: string }) =>
+      item.name.toLowerCase().includes(query),
+    );
+  }, [searchQuery, menuItems]);
+
+  // 4. Handle Loading State
+  if (isLoading) {
+    return (
+      <div className="menu-page">
+        <section className="menu-page-hero">
+          <h1 className="menu-page-title">Delicious food, delivered to you</h1>
+          <p className="menu-page-subtitle">Loading our delicious menu...</p>
+        </section>
+        <Spinner />
+      </div>
+    );
+  }
+
+  // 5. Handle Error State
+  if (error) {
+    return (
+      <div className="menu-page">
+        <section className="menu-page-hero">
+          <h1 className="menu-page-title">Delicious food, delivered to you</h1>
+          <p className="menu-page-subtitle" style={{ color: "red" }}>
+            Failed to load menu. Please try again later.
+          </p>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="menu-page">

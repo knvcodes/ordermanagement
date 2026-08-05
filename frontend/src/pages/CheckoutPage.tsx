@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../store/cartStore";
 import { useOrderStore } from "../store/orderStore";
-import type { DeliveryInfo, Order } from "../utils/types";
+import type { DeliveryInfo, Order, OrderPayload } from "../utils/types";
 import type { DeliveryFormData } from "../validations/order";
 import DeliveryForm from "../components/checkout/DeliveryForm";
 import OrderReview from "../components/checkout/OrderReview";
 import CheckoutSuccess from "../components/checkout/CheckoutSuccess";
 import EmptyState from "../components/common/EmptyState";
 import "../styles/checkout/checkoutPage.css";
+import { useOrderData } from "@/service/orders/orders.providers";
 
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
@@ -17,6 +18,9 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
 
   const [placedOrder, setPlacedOrder] = useState<Order | null>(null);
+
+  // order provider
+  const orderProvider = useOrderData();
 
   if (items.length === 0 && !placedOrder) {
     return (
@@ -36,6 +40,18 @@ export default function CheckoutPage() {
       phone: data.phone,
       notes: data.notes,
     };
+
+    const payload: OrderPayload = {
+      userId: "6a72e76134a85d2ce710053e",
+      items: items.map((item) => ({
+        menuItemId: item.id,
+        quantity: item.quantity,
+      })),
+      delivery: deliveryInfo,
+    };
+
+    orderProvider.createOrder({ ...payload });
+
     const order = placeOrder(items, deliveryInfo);
     clearCart();
     setPlacedOrder(order);

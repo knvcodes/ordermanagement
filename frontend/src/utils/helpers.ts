@@ -54,3 +54,15 @@ export function filterByCategory(
   if (category === "All") return items;
   return items.filter((item) => item.category === category);
 }
+
+export const getRandomRating = (): number => {
+  return parseFloat((Math.random() * (5.0 - 3.5) + 3.5).toFixed(1));
+};
+
+export const getRandomTime = (): string => {
+  const minTime = 15;
+  const maxTime = 45;
+  const randomMinutes =
+    Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+  return `${randomMinutes} mins`;
+};

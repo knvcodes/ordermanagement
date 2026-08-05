@@ -11,10 +11,11 @@ export const CATEGORIES = [
 ] as const;
 
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
-  received: "Order Received",
-  preparing: "Preparing",
-  out_for_delivery: "Out for Delivery",
-  delivered: "Delivered",
+  ORDER_RECEIVED: "Order Received",
+  PREPARING: "Preparing",
+  OUT_FOR_DELIVERY: "Out for Delivery",
+  DELIVERED: "Delivered",
+  CANCELLED: "Cancelled",
 };
 
 export const MENU_ITEMS: MenuItem[] = [
