@@ -7,6 +7,7 @@ import LiveTracker from "../components/order/LiveTracker";
 import EmptyState from "../components/common/EmptyState";
 import "../styles/order/trackOrderPage.css";
 import { useOrderDetailsData } from "@/service/orders/orders.providers";
+import { useOrderSSE } from "@/hooks/useSSE";
 
 interface TrackFormInputs {
   orderId: string;
@@ -15,6 +16,9 @@ interface TrackFormInputs {
 export default function TrackOrderPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const paramId = searchParams.get("orderId");
+
+  // SSE hook — all real-time logic lives here
+  const { liveStatus, isConnected } = useOrderSSE(paramId);
 
   // Initialize React Hook Form
   const {
@@ -28,7 +32,7 @@ export default function TrackOrderPage() {
     },
   });
 
-  // Sync form value if URL param changes (e.g., user clicks browser back/forward)
+  // Sync form value if URL param changes
   useEffect(() => {
     setValue("orderId", paramId ?? "");
   }, [paramId, setValue]);
@@ -39,15 +43,44 @@ export default function TrackOrderPage() {
     setSearchParams({ orderId: trimmedId });
   };
 
-  // 1. Fetch data from the API hook
+  // Fetch data from the API hook
   const { orderDetail, isLoading, error } = useOrderDetailsData(paramId || "");
+
+  // Use live status if available, otherwise use fetched data
+  const displayStatus = liveStatus || orderDetail?.status || null;
 
   return (
     <div className="track-order-page">
       <h1 className="track-order-page-title">Track Your Order</h1>
 
+      {/* Live connection indicator */}
+      {paramId && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            marginBottom: "1rem",
+            fontSize: "0.85rem",
+            color: isConnected ? "#22c55e" : "#ef4444",
+          }}
+        >
+          <span
+            style={{
+              width: "8px",
+              height: "8px",
+              borderRadius: "50%",
+              backgroundColor: isConnected ? "#22c55e" : "#ef4444",
+              display: "inline-block",
+            }}
+          />
+          {isConnected
+            ? "Live tracking active"
+            : "Connecting to live updates..."}
+        </div>
+      )}
+
       <form className="track-order-search" onSubmit={handleSubmit(onSubmit)}>
-        {/* Wrapper to keep flex layout intact while showing error messages */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <input
             type="text"
@@ -80,15 +113,13 @@ export default function TrackOrderPage() {
         </button>
       </form>
 
-      {/* 3. Handle Loading State */}
       {isLoading ? (
         <div className="track-order-result">
           <p style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
             Loading order details...
           </p>
         </div>
-      ) : /* 4. Handle Error State */
-      error ? (
+      ) : error ? (
         <EmptyState
           title="Error loading order"
           description="There was an error fetching your order details. Please check the ID and try again."
@@ -97,7 +128,7 @@ export default function TrackOrderPage() {
         <div className="track-order-result">
           <div className="track-order-status-card">
             <LiveTracker order={orderDetail} />
-            <StatusTimeline status={orderDetail.status} />
+            {displayStatus && <StatusTimeline status={displayStatus} />}
           </div>
 
           <div className="track-order-details">

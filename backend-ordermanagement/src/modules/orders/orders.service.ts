@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import Menu from "../menu/menu.model.js";
 import OrderItem from "../orderItems/orderItems.model.js";
 import { NotFoundError } from "../../utils/errors.js";
+import { sendOrderStatusUpdate } from "../../services/sse.service.js";
 
 export const getOrders = async (req: Request) => {
   try {
@@ -63,6 +64,37 @@ export const getOrderDetails = async (req: Request) => {
     if (orders.length == 0) {
       throw new NotFoundError("Order not found");
     }
+
+    // Notify the user in real-time
+    sendOrderStatusUpdate(id, {
+      type: "status_update",
+      status: "ORDER_RECEIVED",
+      timestamp: new Date().toISOString(),
+    });
+
+    setTimeout(() => {
+      sendOrderStatusUpdate(id, {
+        type: "status_update",
+        status: "PREPARING",
+        timestamp: new Date().toISOString(),
+      });
+    }, 5000);
+    setTimeout(() => {
+      sendOrderStatusUpdate(id, {
+        type: "status_update",
+        status: "OUT_FOR_DELIVERY",
+        timestamp: new Date().toISOString(),
+      });
+    }, 10000);
+    setTimeout(() => {
+      const status = Math.random() < 0.5 ? "DELIVERED" : "CANCELLED";
+
+      sendOrderStatusUpdate(id, {
+        type: "status_update",
+        status: status,
+        timestamp: new Date().toISOString(),
+      });
+    }, 15000);
 
     return orders;
   } catch (error) {

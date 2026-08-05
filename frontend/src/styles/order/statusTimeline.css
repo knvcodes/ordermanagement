@@ -4,31 +4,45 @@
 
 .status-timeline-track,
 .status-timeline-progress {
-  @apply absolute rounded-full;
+  @apply absolute rounded-full z-0;
   top: 1.125rem;
   left: 12.5%;
   height: 4px;
+  width: 75%; /* both track and progress share same width */
 }
 
 .status-timeline-track {
   @apply bg-gray-200;
-  width: 75%;
 }
 
 .status-timeline-progress {
-  @apply bg-success w-0 transition-all duration-700 ease-in-out;
+  @apply bg-success transition-all duration-700 ease-in-out;
+}
+
+/* Progress fills - 0% to 100% of the 75% track width */
+.status-timeline-progress-0 {
+  width: 0%;
 }
 
 .status-timeline-progress-1 {
-  @apply w-1/4;
+  width: 25%;
 }
 
 .status-timeline-progress-2 {
-  @apply w-1/2;
+  width: 50%;
 }
 
 .status-timeline-progress-3 {
-  @apply w-3/4;
+  width: 75%;
+}
+
+/* FIX: 100% of the track width (not container width) */
+.status-timeline-progress-4 {
+  width: 100%;
+}
+
+.status-timeline-progress-cancelled {
+  width: 0%;
 }
 
 .status-timeline-steps {
@@ -56,6 +70,10 @@
   @apply bg-success border-success text-white;
 }
 
+.status-step-circle-cancelled {
+  @apply bg-gray-100 border-gray-200 text-gray-400;
+}
+
 .status-step-label {
   @apply text-xs font-medium text-center text-gray-400 px-1;
 }
@@ -66,4 +84,20 @@
 
 .status-step-label-completed {
   @apply text-dark;
+}
+
+.status-step-label-cancelled {
+  @apply text-gray-400;
+}
+
+/* Cancelled badge */
+.status-cancelled-badge {
+  @apply relative z-20 flex items-center justify-center gap-2 bg-red-50 
+         text-red-600 px-4 py-3 rounded-lg mb-5 font-semibold text-sm 
+         border border-red-200;
+}
+
+.status-cancelled-icon {
+  @apply w-5 h-5 bg-red-600 text-white rounded-full flex items-center 
+         justify-center text-xs;
 }
