@@ -20,3 +20,22 @@ export const createOrder = async (payload: OrderPayload) => {
     throw error;
   }
 };
+
+export const getOrderDetails = async (
+  id?: string,
+): Promise<OrderReal | null> => {
+  try {
+    if (id) {
+      const response = await apiClient.get(`/order/details/${id}`);
+      if (Array.isArray(response.data.data) && response.data.data.length > 0) {
+        return response.data.data[0];
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  } catch (error) {
+    throw error;
+  }
+};

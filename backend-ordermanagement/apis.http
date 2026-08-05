@@ -37,6 +37,17 @@ Content-Type: {{contentType}}
 GET {{baseUrl}}/api/order/6a72e76134a85d2ce710053e
 
 
+### get order details
+GET {{baseUrl}}/api/order/details/6a731cfc5bd11111f7e08d49
+
+### change order status
+PUT {{baseUrl}}/api/order/6a72fd560cf30dd0411746cb
+Content-Type: application/json
+
+{
+  "status": "OUT_FOR_DELIVERY"
+}
+
 
 
 

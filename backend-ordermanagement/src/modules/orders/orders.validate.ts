@@ -17,3 +17,19 @@ export const ordersDetailsSchema = z.object({
     id: z.string().min(1, "orders id is required"),
   }),
 });
+
+export enum OrderStatus {
+  ORDER_RECEIVED = "ORDER_RECEIVED",
+  PREPARING = "PREPARING",
+  OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",
+  DELIVERED = "DELIVERED",
+  CANCELLED = "CANCELLED",
+}
+
+export const UpdateOrderStatusSchema = z.object({
+  body: z.object({
+    status: z.nativeEnum(OrderStatus),
+  }),
+});
+
+export type UpdateOrderStatusInput = z.infer<typeof UpdateOrderStatusSchema>;

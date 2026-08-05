@@ -1,21 +1,19 @@
-import { useEffect, useState, type FormEvent } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useOrderStore } from '../store/orderStore';
-import { calculateItemTotal, formatPrice } from '../utils/helpers';
-import StatusTimeline from '../components/order/StatusTimeline';
-import LiveTracker from '../components/order/LiveTracker';
-import EmptyState from '../components/common/EmptyState';
-import '../styles/order/trackOrderPage.css';
+import { useEffect, useState, type FormEvent } from "react";
+import { useSearchParams } from "react-router-dom";
+import { formatPrice } from "../utils/helpers";
+import StatusTimeline from "../components/order/StatusTimeline";
+import LiveTracker from "../components/order/LiveTracker";
+import EmptyState from "../components/common/EmptyState";
+import "../styles/order/trackOrderPage.css";
+import { useOrderDetailsData } from "@/service/orders/orders.providers";
 
 export default function TrackOrderPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const paramId = searchParams.get('orderId');
-  const orders = useOrderStore((state) => state.orders);
-  const currentOrder = useOrderStore((state) => state.currentOrder);
-  const [inputValue, setInputValue] = useState(paramId ?? '');
+  const paramId = searchParams.get("orderId");
+  const [inputValue, setInputValue] = useState(paramId ?? "");
 
   useEffect(() => {
-    setInputValue(paramId ?? '');
+    setInputValue(paramId ?? "");
   }, [paramId]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -26,10 +24,8 @@ export default function TrackOrderPage() {
     }
   };
 
-  const paramOrder = paramId
-    ? orders.find((order) => order.id === paramId) ?? null
-    : null;
-  const displayedOrder = paramId ? paramOrder : currentOrder;
+  // 1. Fetch data from the API hook
+  const { orderDetail, isLoading, error } = useOrderDetailsData(paramId || "");
 
   return (
     <div className="track-order-page">
@@ -44,16 +40,33 @@ export default function TrackOrderPage() {
           onChange={(event) => setInputValue(event.target.value)}
           aria-label="Order ID"
         />
-        <button type="submit" className="track-order-submit">
-          Track
+        <button
+          type="submit"
+          className="track-order-submit"
+          disabled={isLoading}
+        >
+          {isLoading ? "Tracking..." : "Track"}
         </button>
       </form>
 
-      {displayedOrder ? (
+      {/* 3. Handle Loading State */}
+      {isLoading ? (
+        <div className="track-order-result">
+          <p style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
+            Loading order details...
+          </p>
+        </div>
+      ) : /* 4. Handle Error State */
+      error ? (
+        <EmptyState
+          title="Error loading order"
+          description="There was an error fetching your order details. Please check the ID and try again."
+        />
+      ) : orderDetail ? (
         <div className="track-order-result">
           <div className="track-order-status-card">
-            <LiveTracker order={displayedOrder} />
-            <StatusTimeline status={displayedOrder.status} />
+            <LiveTracker order={orderDetail} />
+            <StatusTimeline status={orderDetail.status} />
           </div>
 
           <div className="track-order-details">
@@ -61,25 +74,25 @@ export default function TrackOrderPage() {
 
             <div className="track-order-details-row">
               <span>Order ID</span>
-              <strong>{displayedOrder.id}</strong>
+              <strong>{orderDetail._id}</strong>
             </div>
             <div className="track-order-details-row">
               <span>Deliver to</span>
-              <strong>{displayedOrder.deliveryInfo.name}</strong>
+              <strong>{orderDetail.delivery.name}</strong>
             </div>
             <div className="track-order-details-row">
               <span>Address</span>
-              <strong>{displayedOrder.deliveryInfo.address}</strong>
+              <strong>{orderDetail.delivery.address}</strong>
             </div>
 
             <div className="track-order-details-divider" />
 
-            {displayedOrder.items.map((item) => (
-              <div key={item.id} className="track-order-details-row">
+            {orderDetail.items.map((item) => (
+              <div key={item._id} className="track-order-details-row">
                 <span>
-                  {item.quantity}× {item.name}
+                  {item.quantity}× {item.itemName}
                 </span>
-                <strong>{formatPrice(calculateItemTotal(item))}</strong>
+                <strong>{formatPrice(item.itemPrice * item.quantity)}</strong>
               </div>
             ))}
 
@@ -87,7 +100,7 @@ export default function TrackOrderPage() {
 
             <div className="track-order-details-row track-order-details-total">
               <span>Total</span>
-              <strong>{formatPrice(displayedOrder.totalAmount)}</strong>
+              <strong>{formatPrice(orderDetail.totalAmount)}</strong>
             </div>
           </div>
         </div>

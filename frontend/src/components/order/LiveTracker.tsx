@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import type { Order } from "../../utils/types";
+import type { OrderReal, OrderStatus } from "../../utils/types";
 import { ORDER_STATUS_LABELS } from "../../utils/staticData";
 import "../../styles/order/liveTracker.css";
 
-const ESTIMATED_TOTAL_SECONDS = 15;
+// Changed to 45 minutes (2700 seconds) for a realistic delivery estimate.
+// Change back to 15 if you are just testing the countdown quickly.
+const ESTIMATED_TOTAL_SECONDS = 10 * 60;
 
 interface LiveTrackerProps {
-  order: Order;
+  order: OrderReal;
 }
 
 function formatDuration(totalSeconds: number): string {
@@ -31,8 +33,13 @@ export default function LiveTracker({ order }: LiveTrackerProps) {
 
   const createdAtMs = new Date(order.createdAt).getTime();
   const elapsedSeconds = Math.max(0, Math.floor((now - createdAtMs) / 1000));
-  const isDelivered = order.status === "delivered";
-  const remainingSeconds = isDelivered
+
+  // 1. Handle both terminal states (Delivered and Cancelled)
+  const isDelivered = order.status === "DELIVERED";
+  const isCancelled = order.status === "CANCELLED";
+  const isTerminalState = isDelivered || isCancelled;
+
+  const remainingSeconds = isTerminalState
     ? 0
     : Math.max(0, ESTIMATED_TOTAL_SECONDS - elapsedSeconds);
 
@@ -40,15 +47,17 @@ export default function LiveTracker({ order }: LiveTrackerProps) {
     <div className="live-tracker">
       <div className="live-tracker-status">
         <span className="live-tracker-dot">
-          {!isDelivered && <span className="live-tracker-dot-ping" />}
+          {/* Stop the ping animation if the order is finished or cancelled */}
+          {!isTerminalState && <span className="live-tracker-dot-ping" />}
           <span
             className={`live-tracker-dot-core ${
               isDelivered ? "live-tracker-dot-core-delivered" : ""
-            }`}
+            } ${isCancelled ? "live-tracker-dot-core-cancelled" : ""}`}
           />
         </span>
         <span className="live-tracker-label">
-          {ORDER_STATUS_LABELS[order.status]}
+          {/* Fallback to raw status string if label is missing */}
+          {ORDER_STATUS_LABELS[order.status as OrderStatus] || order.status}
         </span>
       </div>
 
@@ -62,7 +71,11 @@ export default function LiveTracker({ order }: LiveTrackerProps) {
         <div className="live-tracker-time">
           <span className="live-tracker-time-label">Est. Remaining</span>
           <span className="live-tracker-time-value">
-            {isDelivered ? "Done" : formatDuration(remainingSeconds)}
+            {isDelivered
+              ? "Delivered"
+              : isCancelled
+                ? "Cancelled"
+                : formatDuration(remainingSeconds)}
           </span>
         </div>
       </div>

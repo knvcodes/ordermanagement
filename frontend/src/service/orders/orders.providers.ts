@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createOrder, getOrders } from "./orders.service";
+import { createOrder, getOrderDetails, getOrders } from "./orders.service";
 import { defaultOptions } from "../react.query.config";
 
 export const useOrderData = () => {
@@ -28,5 +28,19 @@ export const useOrderData = () => {
 
     createOrder: createOrderMutation.mutate,
     isCreating: createOrderMutation.isPending,
+  };
+};
+
+export const useOrderDetailsData = (id: string) => {
+  const ordersQuery = useQuery({
+    queryKey: ["order-details", id],
+    queryFn: () => getOrderDetails(id),
+    enabled: !!id,
+  });
+
+  return {
+    orderDetail: ordersQuery.data || null,
+    isLoading: ordersQuery.isLoading,
+    error: ordersQuery.error,
   };
 };

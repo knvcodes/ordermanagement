@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../../utils/logger.js";
 import { handleResponse } from "../../utils/helpers.js";
-import { getOrders, placeOrder } from "./orders.service.js";
+import {
+  getOrderDetails,
+  getOrders,
+  placeOrder,
+  updateOrderStatus,
+} from "./orders.service.js";
 
 export const orderssListing = async (
   req: Request,
@@ -35,6 +40,48 @@ export const orderPlace = async (
   } catch (error) {
     logger.error({
       message: "Error in orderPlace",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    next(error);
+  }
+};
+
+export const orderDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const order = await getOrderDetails(req);
+    handleResponse(res, "Order details fetched successfully", order);
+  } catch (error) {
+    logger.error({
+      message: "Error in orderDetails",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    next(error);
+  }
+};
+
+export const orderStatus = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const order = await updateOrderStatus(req);
+    handleResponse(res, "Order status updated successfully", order);
+  } catch (error) {
+    logger.error({
+      message: "Error in orderStatus",
       error: error instanceof Error ? error.message : error,
       stack: error instanceof Error ? error.stack : undefined,
       route: req.originalUrl,

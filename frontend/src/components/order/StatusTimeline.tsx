@@ -3,10 +3,11 @@ import { ORDER_STATUS_LABELS } from "../../utils/staticData";
 import "../../styles/order/statusTimeline.css";
 
 const STATUS_STEPS: OrderStatus[] = [
-  "received",
-  "preparing",
-  "out_for_delivery",
-  "delivered",
+  "ORDER_RECEIVED",
+  "PREPARING",
+  "OUT_FOR_DELIVERY",
+  "DELIVERED",
+  "CANCELLED",
 ];
 
 interface StatusTimelineProps {

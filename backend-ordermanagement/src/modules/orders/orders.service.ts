@@ -3,6 +3,7 @@ import Order from "./orders.model.js";
 import mongoose from "mongoose";
 import Menu from "../menu/menu.model.js";
 import OrderItem from "../orderItems/orderItems.model.js";
+import { NotFoundError } from "../../utils/errors.js";
 
 export const getOrders = async (req: Request) => {
   try {
@@ -30,6 +31,65 @@ export const getOrders = async (req: Request) => {
     ]);
 
     return orders;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOrderDetails = async (req: Request) => {
+  try {
+    const { id } = req.params;
+
+    const orders = await Order.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(id),
+        },
+      },
+      {
+        $lookup: {
+          from: "orderitems", // MongoDB collection name
+          localField: "_id",
+          foreignField: "orderId",
+          as: "items",
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    ]);
+    if (orders.length == 0) {
+      throw new NotFoundError("Order not found");
+    }
+
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateOrderStatus = async (req: Request) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { status },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    // Check if the order actually exists
+    if (!updatedOrder) {
+      throw new Error("Order not found");
+    }
+
+    return updatedOrder;
   } catch (error) {
     throw error;
   }
