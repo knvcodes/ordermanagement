@@ -2,9 +2,8 @@
 
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import { seedRestaurants } from "./restaurant.seeder.js";
-import { seedDishes } from "./dishes.seeder.js";
 import { seedUsers } from "./users.seeder.js";
+import { seedMenu } from "./menu.seeder.js";
 dotenv.config(); // loads .env file
 
 const MONGO_URI =
@@ -15,8 +14,7 @@ mongoose
   .then(async () => {
     console.log("🔌 Connected to MongoDB");
     await seedUsers();
-    await seedRestaurants(50);
-    await seedDishes(50);
+    await seedMenu();
     await mongoose.disconnect();
     console.log("👋 Disconnected");
     process.exit(0);

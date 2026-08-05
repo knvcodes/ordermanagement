@@ -1,77 +1,57 @@
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import mongoose, { Schema, Model } from "mongoose";
+import { IMenu } from "../../utils/types.js";
 
-// Interface
-export interface IMenu extends Document {
-  name: string;
-  description?: string;
-  age?: number;
-  isActive: boolean;
-  tags?: string[];
-  metadata?: Record<string, any>;
-  createdAt?: Date;
-  updatedAt?: Date;
-  profile: Record<string, unknown>;
-  items: Record<string, unknown>[];
-  userId?: Types.ObjectId; // ✅ relation type
-}
-
-// Schema
 const MenuSchema: Schema<IMenu> = new Schema(
   {
-    name: { type: String, required: true, minlength: 3, maxlength: 50 },
-
-    description: { type: String, minlength: 3, maxlength: 50 },
-
-    age: { type: Number },
-
-    isActive: { type: Boolean, default: true },
-
-    tags: [{ type: String }],
-
-    metadata: { type: Schema.Types.Mixed },
-
-    // Example nested object
-    profile: {
-      firstName: { type: String },
-      lastName: { type: String },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 2,
+      maxlength: 100,
     },
 
-    // Example array of objects
-    items: [
-      {
-        title: { type: String },
-        value: { type: Number },
-      },
-    ],
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 500,
+    },
 
-    // Example reference (relation)
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+
+    image: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    category: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+
+    isAvailable: {
+      type: Boolean,
+      default: true,
+      index: true,
     },
   },
-  { 
+  {
     timestamps: true,
-
-    toJSON: {
-      transform(doc, ret) {
-        delete ret._id;
-        delete ret.__v; // bonus garbage removal
-      },
-    },
-    toObject: {
-      transform(doc, ret) {
-        delete ret._id;
-        delete ret.__v;
-      },
-    },
-  }
+  },
 );
 
-// Model
-const Menu: Model<IMenu> = mongoose.model<IMenu>(
-  "Menu",
-  MenuSchema
-);
+// Indexes
+MenuSchema.index({ category: 1, isAvailable: 1 });
+MenuSchema.index({ name: "text", description: "text" });
+
+const Menu: Model<IMenu> = mongoose.model<IMenu>("Menu", MenuSchema);
 
 export default Menu;

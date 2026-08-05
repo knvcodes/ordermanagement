@@ -1,0 +1,343 @@
+]633;E;echo "### Working directory";c7fbe235-0d01-4fec-b500-cc2901952c3f]633;C### Working directory
+/home/krunal/Documents/GitHub/ordermanagement/frontend
+
+### Project tree
+.
+|-- .gitignore
+|-- index.html
+|-- package-lock.json
+|-- package.json
+|-- plugins
+|   `-- optimize-images.ts
+|-- postcss.config.js
+|-- project-test-report.txt
+|-- src
+|   |-- App.tsx
+|   |-- components
+|   |   |-- cart
+|   |   |   |-- CartDrawer.tsx
+|   |   |   |-- CartItem.tsx
+|   |   |   `-- CartSummary.tsx
+|   |   |-- checkout
+|   |   |   |-- CheckoutSuccess.tsx
+|   |   |   |-- DeliveryForm.tsx
+|   |   |   `-- OrderReview.tsx
+|   |   |-- common
+|   |   |   |-- EmptyState.tsx
+|   |   |   `-- Spinner.tsx
+|   |   |-- layout
+|   |   |   |-- Footer.tsx
+|   |   |   |-- Header.tsx
+|   |   |   |-- Layout.tsx
+|   |   |   `-- Toast.tsx
+|   |   |-- menu
+|   |   |   |-- CategoryFilter.tsx
+|   |   |   |-- FoodCard.tsx
+|   |   |   `-- MenuGrid.tsx
+|   |   `-- order
+|   |       |-- LiveTracker.tsx
+|   |       |-- OrderCard.tsx
+|   |       `-- StatusTimeline.tsx
+|   |-- hooks
+|   |   |-- useCart.ts
+|   |   |-- useMediaQuery.ts
+|   |   `-- useOrder.ts
+|   |-- main.tsx
+|   |-- pages
+|   |   |-- CartPage.tsx
+|   |   |-- CheckoutPage.tsx
+|   |   |-- MenuPage.tsx
+|   |   |-- OrdersPage.tsx
+|   |   `-- TrackOrderPage.tsx
+|   |-- service
+|   |   `-- axios.ts
+|   |-- store
+|   |   |-- cartStore.ts
+|   |   |-- orderStore.ts
+|   |   `-- uiStore.ts
+|   |-- styles
+|   |   |-- cart
+|   |   |   |-- cartDrawer.css
+|   |   |   |-- cartItem.css
+|   |   |   |-- cartPage.css
+|   |   |   `-- cartSummary.css
+|   |   |-- checkout
+|   |   |   |-- checkoutPage.css
+|   |   |   |-- checkoutSuccess.css
+|   |   |   |-- deliveryForm.css
+|   |   |   `-- orderReview.css
+|   |   |-- common
+|   |   |   |-- emptyState.css
+|   |   |   `-- spinner.css
+|   |   |-- index.css
+|   |   |-- layout
+|   |   |   |-- footer.css
+|   |   |   |-- header.css
+|   |   |   |-- layout.css
+|   |   |   `-- toast.css
+|   |   |-- menu
+|   |   |   |-- categoryFilter.css
+|   |   |   |-- foodCard.css
+|   |   |   |-- menuGrid.css
+|   |   |   `-- menuPage.css
+|   |   `-- order
+|   |       |-- liveTracker.css
+|   |       |-- orderCard.css
+|   |       |-- ordersPage.css
+|   |       |-- statusTimeline.css
+|   |       `-- trackOrderPage.css
+|   |-- tests
+|   |   |-- components
+|   |   |   |-- CartDrawer.test.tsx
+|   |   |   |-- DeliveryForm.test.tsx
+|   |   |   `-- FoodCard.test.tsx
+|   |   |-- setup.ts
+|   |   `-- store
+|   |       |-- cartStore.test.ts
+|   |       `-- orderStore.test.ts
+|   |-- utils
+|   |   |-- helpers.ts
+|   |   |-- staticData.ts
+|   |   `-- types.ts
+|   |-- validations
+|   |   |-- cart.ts
+|   |   `-- order.ts
+|   `-- vite-env.d.ts
+|-- tailwind.config.js
+|-- tsconfig.json
+|-- tsconfig.node.json
+`-- vite.config.ts
+
+26 directories, 79 files
+
+### package.json
+{
+  "name": "food-delivery-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "axios": "^1.19.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "react-router-dom": "^6.26.1",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.6.3",
+    "@types/node": "^26.1.2",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^24.1.1",
+    "postcss": "^8.4.41",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
+    "vitest": "^2.0.5"
+  }
+}
+
+### npm scripts
+{
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "preview": "vite preview",
+  "test": "vitest"
+}
+
+### Relevant config files
+
+#### vite.config.ts
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { optimizeImages } from './plugins/optimize-images';
+
+export default defineConfig({
+  plugins: [react(), optimizeImages()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/tests/setup.ts'],
+    css: false,
+  },
+});
+
+#### tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
+
+#### tsconfig.node.json
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts"]
+}
+
+### Source files
+src/App.tsx
+src/components/cart/CartDrawer.tsx
+src/components/cart/CartItem.tsx
+src/components/cart/CartSummary.tsx
+src/components/checkout/CheckoutSuccess.tsx
+src/components/checkout/DeliveryForm.tsx
+src/components/checkout/OrderReview.tsx
+src/components/common/EmptyState.tsx
+src/components/common/Spinner.tsx
+src/components/layout/Footer.tsx
+src/components/layout/Header.tsx
+src/components/layout/Layout.tsx
+src/components/layout/Toast.tsx
+src/components/menu/CategoryFilter.tsx
+src/components/menu/FoodCard.tsx
+src/components/menu/MenuGrid.tsx
+src/components/order/LiveTracker.tsx
+src/components/order/OrderCard.tsx
+src/components/order/StatusTimeline.tsx
+src/hooks/useCart.ts
+src/hooks/useMediaQuery.ts
+src/hooks/useOrder.ts
+src/main.tsx
+src/pages/CartPage.tsx
+src/pages/CheckoutPage.tsx
+src/pages/MenuPage.tsx
+src/pages/OrdersPage.tsx
+src/pages/TrackOrderPage.tsx
+src/service/axios.ts
+src/store/cartStore.ts
+src/store/orderStore.ts
+src/store/uiStore.ts
+src/styles/cart/cartDrawer.css
+src/styles/cart/cartItem.css
+src/styles/cart/cartPage.css
+src/styles/cart/cartSummary.css
+src/styles/checkout/checkoutPage.css
+src/styles/checkout/checkoutSuccess.css
+src/styles/checkout/deliveryForm.css
+src/styles/checkout/orderReview.css
+src/styles/common/emptyState.css
+src/styles/common/spinner.css
+src/styles/index.css
+src/styles/layout/footer.css
+src/styles/layout/header.css
+src/styles/layout/layout.css
+src/styles/layout/toast.css
+src/styles/menu/categoryFilter.css
+src/styles/menu/foodCard.css
+src/styles/menu/menuGrid.css
+src/styles/menu/menuPage.css
+src/styles/order/liveTracker.css
+src/styles/order/orderCard.css
+src/styles/order/ordersPage.css
+src/styles/order/statusTimeline.css
+src/styles/order/trackOrderPage.css
+src/tests/components/CartDrawer.test.tsx
+src/tests/components/DeliveryForm.test.tsx
+src/tests/components/FoodCard.test.tsx
+src/tests/setup.ts
+src/tests/store/cartStore.test.ts
+src/tests/store/orderStore.test.ts
+src/utils/helpers.ts
+src/utils/staticData.ts
+src/utils/types.ts
+src/validations/cart.ts
+src/validations/order.ts
+src/vite-env.d.ts
+
+### Test files
+No tests directory found
+
+### Installed test-related packages
+food-delivery-app@0.1.0 /home/krunal/Documents/GitHub/ordermanagement/frontend
+├── @testing-library/jest-dom@7.0.0
+├── @testing-library/react@16.3.2
+├── @testing-library/user-event@14.6.3
+├── jsdom@24.1.3
+└─┬ vitest@2.1.9
+  └── jsdom@24.1.3 deduped
+
+
+### Test script from package.json
+"vitest"
+
+### Test run output
+
+> food-delivery-app@0.1.0 test
+> vitest --run
+
+
+ RUN  v2.1.9 /home/krunal/Documents/GitHub/ordermanagement/frontend
+
+ ✓ src/tests/store/cartStore.test.ts (5 tests) 18ms
+ ✓ src/tests/store/orderStore.test.ts (2 tests) 11ms
+stderr | src/tests/components/DeliveryForm.test.tsx > DeliveryForm > shows validation errors when submitting an empty form
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | src/tests/components/FoodCard.test.tsx > FoodCard > renders the food item name and formatted price
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/tests/components/FoodCard.test.tsx (2 tests) 162ms
+stderr | src/tests/components/CartDrawer.test.tsx > CartDrawer > displays cart items when the drawer is open
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/tests/components/CartDrawer.test.tsx (3 tests) 195ms
+ ✓ src/tests/components/DeliveryForm.test.tsx (2 tests) 361ms
+
+ Test Files  5 passed (5)
+      Tests  14 passed (14)
+   Start at  14:49:40
+   Duration  2.08s (transform 435ms, setup 1.23s, collect 1.23s, tests 748ms, environment 3.20s, prepare 1.06s)
+
+
+### Coverage output
+ MISSING DEPENDENCY  Cannot find dependency '@vitest/coverage-v8'
+

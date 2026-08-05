@@ -1,192 +1,132 @@
 // seeder/users.seeder.js
 
 import Users from "../modules/users/users.model.js";
+import { ADMIN, CUSTOMER } from "../config/vars.js";
 
 // Static user data
 const STATIC_USERS = [
-  // 1 Admin
   {
     name: "Admin User",
     email: "admin@restaurant.com",
-    password: "Admin@123",
-    role: "admin",
-    isOAuth: false,
+    phone: "9000000001",
+    role: ADMIN,
   },
 
-  // Owners (5 users)
-  {
-    name: "John Smith",
-    email: "john.smith@restaurant.com",
-    password: "Owner@123",
-    role: "owner",
-    isOAuth: false,
-  },
-  {
-    name: "Sarah Johnson",
-    email: "sarah.johnson@restaurant.com",
-    password: "Owner@123",
-    role: "owner",
-    isOAuth: false,
-  },
-  {
-    name: "Michael Brown",
-    email: "michael.brown@restaurant.com",
-    password: "Owner@123",
-    role: "owner",
-    isOAuth: false,
-  },
-  {
-    name: "Emily Davis",
-    email: "emily.davis@restaurant.com",
-    password: "Owner@123",
-    role: "owner",
-    isOAuth: false,
-  },
-  {
-    name: "Robert Wilson",
-    email: "robert.wilson@restaurant.com",
-    password: "Owner@123",
-    role: "owner",
-    isOAuth: false,
-  },
-
-  // Customers (remaining)
   {
     name: "Alice Cooper",
     email: "alice@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000002",
+    role: CUSTOMER,
   },
   {
     name: "Bob Martin",
     email: "bob@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000003",
+    role: CUSTOMER,
   },
   {
     name: "Charlie Parker",
     email: "charlie@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000004",
+    role: CUSTOMER,
   },
   {
     name: "Diana Prince",
     email: "diana@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000005",
+    role: CUSTOMER,
   },
   {
     name: "Eve Johnson",
     email: "eve@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000006",
+    role: CUSTOMER,
   },
   {
     name: "Frank Castle",
     email: "frank@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000007",
+    role: CUSTOMER,
   },
   {
     name: "Grace Hopper",
     email: "grace@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000008",
+    role: CUSTOMER,
   },
   {
     name: "Henry Ford",
     email: "henry@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000009",
+    role: CUSTOMER,
   },
   {
     name: "Ivy League",
     email: "ivy@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000010",
+    role: CUSTOMER,
   },
   {
     name: "Jack Ryan",
     email: "jack@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000011",
+    role: CUSTOMER,
   },
   {
     name: "Kate Bishop",
     email: "kate@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000012",
+    role: CUSTOMER,
   },
   {
     name: "Liam Neeson",
     email: "liam@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000013",
+    role: CUSTOMER,
   },
   {
     name: "Mia Wallace",
     email: "mia@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000014",
+    role: CUSTOMER,
   },
   {
     name: "Noah Ark",
     email: "noah@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000015",
+    role: CUSTOMER,
   },
   {
     name: "Olivia Pope",
     email: "olivia@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000016",
+    role: CUSTOMER,
   },
   {
     name: "Peter Parker",
     email: "peter@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000017",
+    role: CUSTOMER,
   },
   {
     name: "Quinn Fabray",
     email: "quinn@email.com",
-    password: "Customer@123",
-    role: "customer",
-    isOAuth: false,
+    phone: "9000000018",
+    role: CUSTOMER,
   },
 ];
 
-// ── Seeder ──────────────────────────────────────────────
-
+// Seeder
 export async function seedUsers() {
   try {
     await Users.deleteMany({});
-    console.log("🗑️  Cleared existing users");
+    console.log("🗑️ Cleared existing users");
 
-    for (const userData of STATIC_USERS) {
-      await Users.create(userData);
-    }
+    await Users.insertMany(STATIC_USERS);
 
     console.log(`✅ Seeded ${STATIC_USERS.length} users`);
     console.log(`   - 1 admin`);
-    console.log(`   - 5 owners`);
-    console.log(`   - ${STATIC_USERS.length - 6} customers`);
+    console.log(`   - ${STATIC_USERS.length - 1} customers`);
   } catch (error) {
     console.error("❌ Seeder failed:", error);
     throw error;

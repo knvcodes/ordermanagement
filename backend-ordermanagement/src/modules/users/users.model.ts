@@ -1,6 +1,5 @@
 import mongoose, { Schema, Model } from "mongoose";
-import bcrypt from "bcryptjs";
-import { CUSTOMER, OWNER } from "../../config/vars.js";
+import { ADMIN, CUSTOMER } from "../../config/vars.js";
 import { Users } from "../../utils/types.js";
 
 // Schema
@@ -14,34 +13,25 @@ const UsersSchema: Schema<Users> = new Schema(
       maxlength: 50,
       unique: true,
     },
-    password: {
+
+    phone: {
       type: String,
-      select: false,
+      required: true,
+      unique: true,
+      trim: true,
     },
     role: {
       type: String,
       required: true,
-      enum: [OWNER, CUSTOMER],
+      enum: [ADMIN, CUSTOMER],
     },
 
-    cartId: { type: String, unique: true },
     avatar: { type: String },
-    isOAuth: { type: Boolean, required: true },
   },
   {
     timestamps: true,
   },
 );
-
-UsersSchema.pre("save", async function (next) {
-  // Don't hash again if password wasn't changed
-  if (!this.isModified("password")) {
-    return next();
-  }
-
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
 
 // Model
 const Users: Model<Users> = mongoose.model<Users>("Users", UsersSchema);

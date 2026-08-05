@@ -1,19 +1,17 @@
-import { useMemo, useState } from 'react';
-import { MENU_ITEMS } from '../utils/staticData';
-import CategoryFilter from '../components/menu/CategoryFilter';
-import MenuGrid from '../components/menu/MenuGrid';
-import '../styles/menu/menuPage.css';
+import { useMemo, useState } from "react";
+import { MENU_ITEMS } from "../utils/staticData";
+import CategoryFilter from "../components/menu/CategoryFilter";
+import MenuGrid from "../components/menu/MenuGrid";
+import "../styles/menu/menuPage.css";
 
 export default function MenuPage() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const searchedItems = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return MENU_ITEMS;
-    return MENU_ITEMS.filter((item) =>
-      item.name.toLowerCase().includes(query),
-    );
+    return MENU_ITEMS.filter((item) => item.name.toLowerCase().includes(query));
   }, [searchQuery]);
 
   return (

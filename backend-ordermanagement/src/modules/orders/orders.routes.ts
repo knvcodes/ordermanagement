@@ -1,8 +1,9 @@
 import express from "express";
-import { orderssListing } from "./orders.controller.js";
+import { orderPlace, orderssListing } from "./orders.controller.js";
 
 const ordersRouter = express.Router();
 
-ordersRouter.get("/list", orderssListing);
+ordersRouter.get("/:id", orderssListing);
+ordersRouter.post("/place", orderPlace);
 
 export default ordersRouter;

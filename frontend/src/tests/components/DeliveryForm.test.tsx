@@ -1,11 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect, vi } from 'vitest';
-import DeliveryForm from '@/components/checkout/DeliveryForm';
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { describe, it, expect, vi } from "vitest";
+import DeliveryForm from "@/components/checkout/DeliveryForm";
 
-describe('DeliveryForm', () => {
-  it('shows validation errors when submitting an empty form', async () => {
+describe("DeliveryForm", () => {
+  it("shows validation errors when submitting an empty form", async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
 
@@ -15,7 +15,9 @@ describe('DeliveryForm', () => {
       </MemoryRouter>,
     );
 
-    await user.click(screen.getByRole('button', { name: /place order|submit/i }));
+    await user.click(
+      screen.getByRole("button", { name: /place order|submit/i }),
+    );
 
     expect(
       await screen.findByText(/name must be at least 2 characters/i),
@@ -26,7 +28,7 @@ describe('DeliveryForm', () => {
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
-  it('submits valid form data', async () => {
+  it("submits valid form data", async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
 
@@ -36,24 +38,27 @@ describe('DeliveryForm', () => {
       </MemoryRouter>,
     );
 
-    await user.type(screen.getByLabelText(/full name/i), 'John Doe');
+    await user.type(screen.getByLabelText(/full name/i), "John Doe");
     await user.type(
       screen.getByLabelText(/address/i),
-      '123 Main Street, Springfield',
+      "123 Main Street, Springfield",
     );
-    await user.type(screen.getByLabelText(/phone/i), '+1 555-123-4567');
+    await user.type(screen.getByLabelText(/phone/i), "+1 555-123-4567");
 
-    await user.click(screen.getByRole('button', { name: /place order|submit/i }));
+    await user.click(
+      screen.getByRole("button", { name: /place order|submit/i }),
+    );
 
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
     });
     expect(onSubmit).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: 'John Doe',
-        address: '123 Main Street, Springfield',
-        phone: '+1 555-123-4567',
+        name: "John Doe",
+        address: "123 Main Street, Springfield",
+        phone: "+1 555-123-4567",
       }),
+      expect.anything(),
     );
   });
 });

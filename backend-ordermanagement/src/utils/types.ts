@@ -1,35 +1,5 @@
 import { Request } from "express";
-
-export interface UploadOptions {
-  contentType?: string;
-  metadata?: Record<string, string>;
-  cacheControl?: string;
-}
-
-export interface UploadResult {
-  key: string;
-  bucket: string;
-  url: string;
-  publicUrl: string;
-}
-
-export interface ImageUploadResult extends UploadResult {
-  width?: number;
-  height?: number;
-  format?: string;
-  size: number;
-  thumbnailKey?: string;
-  thumbnailUrl?: string;
-}
-
-export interface MulterFile {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  size: number;
-  buffer: Buffer;
-}
+import { Types } from "mongoose";
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -69,9 +39,42 @@ declare global {
 export interface Users extends Document {
   name: string;
   email: string;
-  password: string;
+  phone: string;
   role: string;
   avatar?: string;
-  isOAuth: boolean;
-  cartId?: string;
+}
+
+export interface IMenu extends Document {
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  isAvailable: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type OrderStatus =
+  | "ORDER_RECEIVED"
+  | "PREPARING"
+  | "OUT_FOR_DELIVERY"
+  | "DELIVERED"
+  | "CANCELLED";
+
+export interface IOrder extends Document {
+  userId: Types.ObjectId;
+
+  totalAmount: number;
+
+  status: OrderStatus;
+
+  delivery: {
+    name: string;
+    phone: string;
+    address: string;
+  };
+
+  createdAt: Date;
+  updatedAt: Date;
 }

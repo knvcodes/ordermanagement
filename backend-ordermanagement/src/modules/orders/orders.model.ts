@@ -1,77 +1,64 @@
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import mongoose, { Schema, Model } from "mongoose";
+import { IOrder } from "../../utils/types.js";
 
-// Interface
-export interface IOrders extends Document {
-  name: string;
-  description?: string;
-  age?: number;
-  isActive: boolean;
-  tags?: string[];
-  metadata?: Record<string, any>;
-  createdAt?: Date;
-  updatedAt?: Date;
-  profile: Record<string, unknown>;
-  items: Record<string, unknown>[];
-  userId?: Types.ObjectId; // ✅ relation type
-}
-
-// Schema
-const OrdersSchema: Schema<IOrders> = new Schema(
+const OrderSchema: Schema<IOrder> = new Schema(
   {
-    name: { type: String, required: true, minlength: 3, maxlength: 50 },
-
-    description: { type: String, minlength: 3, maxlength: 50 },
-
-    age: { type: Number },
-
-    isActive: { type: Boolean, default: true },
-
-    tags: [{ type: String }],
-
-    metadata: { type: Schema.Types.Mixed },
-
-    // Example nested object
-    profile: {
-      firstName: { type: String },
-      lastName: { type: String },
-    },
-
-    // Example array of objects
-    items: [
-      {
-        title: { type: String },
-        value: { type: Number },
-      },
-    ],
-
-    // Example reference (relation)
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+      index: true,
+    },
+
+    totalAmount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+
+    status: {
+      type: String,
+      enum: [
+        "ORDER_RECEIVED",
+        "PREPARING",
+        "OUT_FOR_DELIVERY",
+        "DELIVERED",
+        "CANCELLED",
+      ],
+      default: "ORDER_RECEIVED",
+      index: true,
+    },
+
+    delivery: {
+      name: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+
+      phone: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+
+      address: {
+        type: String,
+        required: true,
+        trim: true,
+      },
     },
   },
-  { 
+  {
     timestamps: true,
-
-    toJSON: {
-      transform(doc, ret) {
-        delete ret._id;
-        delete ret.__v; // bonus garbage removal
-      },
-    },
-    toObject: {
-      transform(doc, ret) {
-        delete ret._id;
-        delete ret.__v;
-      },
-    },
-  }
+  },
 );
 
-// Model
-const Orders: Model<IOrders> = mongoose.model<IOrders>(
-  "Orders",
-  OrdersSchema
-);
+// Indexes
+OrderSchema.index({ userId: 1, createdAt: -1 });
+OrderSchema.index({ status: 1 });
+OrderSchema.index({ createdAt: -1 });
 
-export default Orders;
+const Order: Model<IOrder> = mongoose.model<IOrder>("Order", OrderSchema);
+
+export default Order;
