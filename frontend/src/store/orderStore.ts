@@ -16,15 +16,6 @@ interface OrderState {
   getOrderById: (id: string) => Order | undefined;
 }
 
-const simulateStatusProgression = (
-  orderId: string,
-  updateStatus: (id: string, status: OrderStatus) => void,
-) => {
-  setTimeout(() => updateStatus(orderId, "preparing"), 3000);
-  setTimeout(() => updateStatus(orderId, "out_for_delivery"), 8000);
-  setTimeout(() => updateStatus(orderId, "delivered"), 15000);
-};
-
 export const useOrderStore = create<OrderState>()(
   persist(
     (set, get) => ({
@@ -41,7 +32,7 @@ export const useOrderStore = create<OrderState>()(
           id: generateOrderId(),
           items: cartItems,
           deliveryInfo,
-          status: "received",
+          status: "DELIVERED",
           createdAt: new Date().toISOString(),
           totalAmount,
         };
@@ -50,8 +41,6 @@ export const useOrderStore = create<OrderState>()(
           orders: [newOrder, ...state.orders],
           currentOrder: newOrder,
         }));
-
-        simulateStatusProgression(newOrder.id, get().updateOrderStatus);
 
         return newOrder;
       },

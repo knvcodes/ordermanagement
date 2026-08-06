@@ -4,15 +4,17 @@ import type { CartItem, DeliveryInfo } from "@/utils/types";
 
 const cartItems: CartItem[] = [
   {
-    id: "burger-001",
+    _id: "burger-001",
     name: "Classic Burger",
     description: "Beef patty with lettuce and tomato",
     price: 1000,
     category: "Burger",
     image: "/images/burger.jpg",
-    rating: 4.5,
-    prepTime: 15,
     quantity: 2,
+    isAvailable: false,
+    __v: 0,
+    createdAt: "",
+    updatedAt: "",
   },
 ];
 

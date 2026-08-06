@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { useCartStore } from '../store/cartStore';
-import CartItem from '../components/cart/CartItem';
-import CartSummary from '../components/cart/CartSummary';
-import EmptyState from '../components/common/EmptyState';
-import '../styles/cart/cartPage.css';
+import { useNavigate } from "react-router-dom";
+import { useCartStore } from "../store/cartStore";
+import CartItem from "../components/cart/CartItem";
+import CartSummary from "../components/cart/CartSummary";
+import EmptyState from "../components/common/EmptyState";
+import "../styles/cart/cartPage.css";
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
@@ -16,7 +16,7 @@ export default function CartPage() {
         title="Your cart is empty"
         description="Add some delicious dishes to get started."
         actionLabel="Browse Menu"
-        onAction={() => navigate('/')}
+        onAction={() => navigate("/")}
       />
     );
   }
@@ -33,7 +33,7 @@ export default function CartPage() {
 
         <div className="cart-page-items">
           {items.map((item) => (
-            <CartItem key={item.id} item={item} />
+            <CartItem key={item._id} item={item} />
           ))}
         </div>
 

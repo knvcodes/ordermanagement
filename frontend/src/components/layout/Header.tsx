@@ -20,6 +20,7 @@ export default function Header() {
           <NavLink to="/" className="header-nav-link">Menu</NavLink>
           <NavLink to="/orders" className="header-nav-link">Orders</NavLink>
           <NavLink to="/track" className="header-nav-link">Track</NavLink>
+          <NavLink to="/change-status" className="header-nav-link">Change Status</NavLink>
         </nav>
 
         <div className="header-actions">
@@ -50,6 +51,7 @@ export default function Header() {
           <NavLink to="/" className="header-mobile-link" onClick={toggleMobileMenu}>Menu</NavLink>
           <NavLink to="/orders" className="header-mobile-link" onClick={toggleMobileMenu}>Orders</NavLink>
           <NavLink to="/track" className="header-mobile-link" onClick={toggleMobileMenu}>Track</NavLink>
+          <NavLink to="/change-status" className="header-mobile-link" onClick={toggleMobileMenu}>Change Status</NavLink>
         </nav>
       )}
     </header>

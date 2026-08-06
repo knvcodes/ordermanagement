@@ -1,4 +1,4 @@
-import { OrderPayload, OrderReal } from "@/utils/types";
+import { OrderPayload, OrderReal, OrderStatus } from "@/utils/types";
 import apiClient from "../axios";
 
 export const getOrders = async (): Promise<OrderReal[]> => {
@@ -35,6 +35,19 @@ export const getOrderDetails = async (
     } else {
       return null;
     }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateOrderStatus = async (
+  id: string,
+  status: OrderStatus,
+): Promise<OrderReal> => {
+  try {
+    const response = await apiClient.put(`/order/${id}`, { status });
+
+    return response.data.data;
   } catch (error) {
     throw error;
   }

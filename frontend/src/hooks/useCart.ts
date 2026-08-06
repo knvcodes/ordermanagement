@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { useCartStore } from "@/store/cartStore";
-import type { CartItem, MenuItem } from "@/utils/types";
+import type { CartItem, MenuItem2 } from "@/utils/types";
 
 export interface UseCartReturn {
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
   isEmpty: boolean;
-  addItem: (menuItem: MenuItem) => void;
+  addItem: (menuItem: MenuItem2) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -40,6 +40,6 @@ export function useCart(): UseCartReturn {
     removeItem,
     updateQuantity,
     clearCart,
-    hasItem: (itemId: string) => items.some((item) => item.id === itemId),
+    hasItem: (itemId: string) => items.some((item) => item._id === itemId),
   };
 }

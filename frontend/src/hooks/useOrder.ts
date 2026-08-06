@@ -24,7 +24,7 @@ export function useOrder(): UseOrderReturn {
   );
 
   const isOrderActive = useCallback(
-    (order: Order) => order.status !== "delivered",
+    (order: Order) => order.status !== "DELIVERED",
     [],
   );
 
