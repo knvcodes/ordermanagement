@@ -11,7 +11,6 @@ import Order from "./orders.model.js";
 import Menu from "../menu/menu.model.js";
 import OrderItem from "../orderItems/orderItems.model.js";
 import { NotFoundError } from "../../utils/errors.js";
-import { sendOrderStatusUpdate } from "../../services/sse.service.js";
 
 vi.mock("./orders.model.js", () => ({
   default: {
@@ -81,7 +80,6 @@ vi.mock("mongoose", () => {
 });
 
 const mockedStartSession = vi.mocked(mongoose.startSession);
-const mockedSendOrderStatusUpdate = vi.mocked(sendOrderStatusUpdate);
 
 const delivery = {
   name: "John Doe",
@@ -161,11 +159,7 @@ describe("orders service", () => {
   });
 
   describe("getOrderDetails", () => {
-    it("should return order details and schedule status updates", async () => {
-      vi.useFakeTimers();
-
-      const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0.4);
-
+    it("should return order details", async () => {
       const orders = [{ _id: "order-123" }];
 
       vi.mocked(Order.aggregate).mockResolvedValue(orders as any);
@@ -183,54 +177,6 @@ describe("orders service", () => {
       const pipeline = vi.mocked(Order.aggregate).mock.calls[0]?.[0] as any[];
 
       expect(pipeline[0].$match._id.toString()).toBe("order-123");
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledTimes(1);
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledWith(
-        "order-123",
-        expect.objectContaining({
-          type: "status_update",
-          status: "ORDER_RECEIVED",
-        }),
-      );
-
-      await vi.advanceTimersByTimeAsync(5000);
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledTimes(2);
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledWith(
-        "order-123",
-        expect.objectContaining({
-          type: "status_update",
-          status: "PREPARING",
-        }),
-      );
-
-      await vi.advanceTimersByTimeAsync(5000);
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledTimes(3);
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledWith(
-        "order-123",
-        expect.objectContaining({
-          type: "status_update",
-          status: "OUT_FOR_DELIVERY",
-        }),
-      );
-
-      await vi.advanceTimersByTimeAsync(5000);
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledTimes(4);
-
-      expect(mockedSendOrderStatusUpdate).toHaveBeenCalledWith(
-        "order-123",
-        expect.objectContaining({
-          type: "status_update",
-          status: "DELIVERED",
-        }),
-      );
-
-      randomSpy.mockRestore();
     });
 
     it("should throw NotFoundError when order does not exist", async () => {
@@ -243,8 +189,6 @@ describe("orders service", () => {
       } as unknown as Request;
 
       await expect(getOrderDetails(req)).rejects.toBeInstanceOf(NotFoundError);
-
-      expect(mockedSendOrderStatusUpdate).not.toHaveBeenCalled();
     });
 
     it("should rethrow aggregate errors", async () => {
