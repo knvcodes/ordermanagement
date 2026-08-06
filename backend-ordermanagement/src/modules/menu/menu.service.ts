@@ -19,9 +19,7 @@ export const getMenu = async (req: Request) => {
     }
 
     const data = await Menu.find(whereClause).skip(offset).limit(Number(limit));
-
     const total = await Menu.countDocuments(whereClause);
-
     const hasNext = total - (offset + Number(limit)) > 0;
 
     return {

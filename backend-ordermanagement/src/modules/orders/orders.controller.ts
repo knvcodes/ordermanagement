@@ -7,6 +7,7 @@ import {
   placeOrder,
   updateOrderStatus,
 } from "./orders.service.js";
+import { message } from "../../utils/messages.js";
 
 export const orderssListing = async (
   req: Request,
@@ -15,7 +16,7 @@ export const orderssListing = async (
 ) => {
   try {
     const orders = await getOrders(req);
-    handleResponse(res, "User's orders", orders);
+    handleResponse(res, message.orders.success.list, orders);
   } catch (error) {
     logger.error({
       message: "Error in ordersListing",
@@ -36,7 +37,7 @@ export const orderPlace = async (
 ) => {
   try {
     const order = await placeOrder(req);
-    handleResponse(res, "Order placed succesfully", order);
+    handleResponse(res, message.orders.success.place, order);
   } catch (error) {
     logger.error({
       message: "Error in orderPlace",
@@ -57,7 +58,7 @@ export const orderDetails = async (
 ) => {
   try {
     const order = await getOrderDetails(req);
-    handleResponse(res, "Order details fetched successfully", order);
+    handleResponse(res, message.orders.success.details, order);
   } catch (error) {
     logger.error({
       message: "Error in orderDetails",
@@ -78,7 +79,7 @@ export const orderStatus = async (
 ) => {
   try {
     const order = await updateOrderStatus(req);
-    handleResponse(res, "Order status updated successfully", order);
+    handleResponse(res, message.orders.success.statusChange, order);
   } catch (error) {
     logger.error({
       message: "Error in orderStatus",

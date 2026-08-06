@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { handleResponse } from "../../utils/helpers.js";
 import logger from "../../utils/logger.js";
 import { getMenu } from "./menu.service.js";
+import { message } from "../../utils/messages.js";
 
 export const menusListing = async (
   req: Request,
@@ -10,7 +11,7 @@ export const menusListing = async (
 ) => {
   try {
     const data = await getMenu(req);
-    handleResponse(res, "List of menu", data);
+    handleResponse(res, message.menu.success.list, data);
   } catch (error) {
     logger.error({
       message: "Error in menuListing",

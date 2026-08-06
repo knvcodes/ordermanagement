@@ -1,37 +1,19 @@
 export const message = {
-  email: {
-    appName: "Restaurant Management",
-    register: "Go to restaurant management.",
-    registerDetails:
-      "Your account is ready. Start exploring restaurants, saving favorites, and booking tables in seconds.",
-  },
-  success: {
-    addDish: "Dish added successfully",
-    restaurant: {
-      fetch: "Restaurants list fetched successfully",
-      add: "Restaurant added successfully",
-      detail: "Restaurant details fetched successfully",
-    },
-    user: {
-      registerSuccess: "User registered successfully",
-      loginSuccess: "User loggedin successfully",
-      forgotPasswordLink:
-        "A reset link has been sent to your registered email.",
-      resetPassword: "Password has been reset successfully.",
-      updateAvatar: "Avatar updated successfully.",
-      profile: "User profile fetched successfully",
+  menu: {
+    success: {
+      list: "Menu fetched successfully",
     },
   },
-  failed: {
-    restaurantNotFound: "Restaurant not found for given id",
-    user: {
-      notFound: "User with email associated not found.",
-      userNotFound: "User not found",
-      incorrectPassword: "Password provided is incorrect",
-      emailAlreadtExists:
-        "Provided email is already used. Please use another email",
-      resetPasswordTokenExpired:
-        "Reset password token expired. Please try forgot password again.",
+  orders: {
+    success: {
+      list: "User's orders fetched successfully",
+      place: "Order placed successfully",
+      details: "Order details fetched successfully",
+      statusChange: "Order status updated successfully",
+    },
+    failed: {
+      orderNotFound: "Order not found",
+      orderItemMin: "Order must contain at least one item.",
     },
   },
   validation: {

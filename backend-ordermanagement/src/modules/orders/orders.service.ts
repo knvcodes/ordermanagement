@@ -5,6 +5,7 @@ import Menu from "../menu/menu.model.js";
 import OrderItem from "../orderItems/orderItems.model.js";
 import { NotFoundError } from "../../utils/errors.js";
 import { sendOrderStatusUpdate } from "../../services/sse.service.js";
+import { message } from "../../utils/messages.js";
 
 export const getOrders = async (req: Request) => {
   try {
@@ -18,7 +19,7 @@ export const getOrders = async (req: Request) => {
       },
       {
         $lookup: {
-          from: "orderitems", // MongoDB collection name
+          from: "orderitems",
           localField: "_id",
           foreignField: "orderId",
           as: "items",
@@ -62,7 +63,7 @@ export const getOrderDetails = async (req: Request) => {
       },
     ]);
     if (orders.length == 0) {
-      throw new NotFoundError("Order not found");
+      throw new NotFoundError(message.orders.failed.orderNotFound);
     }
 
     // Notify the user in real-time
@@ -118,7 +119,7 @@ export const updateOrderStatus = async (req: Request) => {
 
     // Check if the order actually exists
     if (!updatedOrder) {
-      throw new Error("Order not found");
+      throw new Error(message.orders.failed.orderNotFound);
     }
 
     return updatedOrder;
@@ -135,7 +136,7 @@ export const placeOrder = async (req: Request) => {
     const { userId, delivery, items } = req.body;
 
     if (!items?.length) {
-      throw new Error("Order must contain at least one item.");
+      throw new Error(message.orders.failed.orderItemMin);
     }
 
     // Fetch all menu items
