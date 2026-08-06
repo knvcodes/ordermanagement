@@ -41,7 +41,7 @@ export default function CartItem({ item }: CartItemProps) {
           <div className="cart-item-stepper">
             <button
               className="cart-item-step-btn"
-              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+              onClick={() => updateQuantity(item._id, item.quantity - 1)}
               aria-label={`Decrease ${item.name} quantity`}
             >
               −
@@ -64,7 +64,7 @@ export default function CartItem({ item }: CartItemProps) {
 
       <button
         className="cart-item-remove"
-        onClick={() => removeItem(item.id)}
+        onClick={() => removeItem(item._id)}
         aria-label={`Remove ${item.name} from cart`}
       >
         ×

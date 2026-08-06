@@ -5,17 +5,19 @@ import { describe, it, expect, beforeEach } from "vitest";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { useCartStore } from "@/store/cartStore";
 import { useUiStore } from "@/store/uiStore";
-import type { MenuItem } from "@/utils/types";
+import type { MenuItem2 } from "@/utils/types";
 
-const mockItem: MenuItem = {
-  id: "burger-001",
+const mockItem: MenuItem2 = {
+  _id: "burger-001",
   name: "Classic Burger",
   description: "Beef patty with lettuce and tomato",
   price: 1000,
   category: "Burger",
   image: "/images/burger.jpg",
-  rating: 4.5,
-  prepTime: 15,
+  isAvailable: true,
+  __v: 0,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
 };
 
 describe("CartDrawer", () => {

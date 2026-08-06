@@ -1,27 +1,31 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { useCartStore } from "@/store/cartStore";
-import type { MenuItem } from "@/utils/types";
+import type { MenuItem2 } from "@/utils/types";
 
-const pizza: MenuItem = {
-  id: "pizza-001",
+const pizza: MenuItem2 = {
+  _id: "pizza-001",
   name: "Margherita Pizza",
   description: "Fresh mozzarella, tomato, and basil",
   price: 1200,
   category: "Pizza",
   image: "/images/pizza.jpg",
-  rating: 4.7,
-  prepTime: 20,
+  isAvailable: true,
+  __v: 0,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
 };
 
-const salad: MenuItem = {
-  id: "salad-001",
+const salad: MenuItem2 = {
+  _id: "salad-001",
   name: "Caesar Salad",
   description: "Romaine, parmesan, and croutons",
   price: 800,
   category: "Salad",
   image: "/images/salad.jpg",
-  rating: 4.3,
-  prepTime: 10,
+  isAvailable: true,
+  __v: 0,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
 };
 
 describe("cartStore", () => {
@@ -34,7 +38,7 @@ describe("cartStore", () => {
 
     const { items } = useCartStore.getState();
     expect(items).toHaveLength(1);
-    expect(items[0].id).toBe("pizza-001");
+    expect(items[0]._id).toBe("pizza-001");
     expect(items[0].quantity).toBe(1);
   });
 
@@ -54,7 +58,7 @@ describe("cartStore", () => {
 
     const { items } = useCartStore.getState();
     expect(items).toHaveLength(1);
-    expect(items[0].id).toBe("salad-001");
+    expect(items[0]._id).toBe("salad-001");
   });
 
   it("updates the quantity of an item", () => {

@@ -49,7 +49,7 @@ export default function CartDrawer() {
           <>
             <div className="cart-drawer-body">
               {items.map((item) => (
-                <CartItem key={item.id} item={item} />
+                <CartItem key={item._id} item={item} />
               ))}
             </div>
             <div className="cart-drawer-footer">
