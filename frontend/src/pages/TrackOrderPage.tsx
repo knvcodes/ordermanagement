@@ -13,6 +13,9 @@ interface TrackFormInputs {
   orderId: string;
 }
 
+const DELIVERY_FEE = 299; // cents
+const TAX_RATE = 0.08;
+
 export default function TrackOrderPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const paramId = searchParams.get("orderId");
@@ -48,6 +51,14 @@ export default function TrackOrderPage() {
 
   // Use live status if available, otherwise use fetched data
   const displayStatus = liveStatus || orderDetail?.status || null;
+  const subtotal = orderDetail
+    ? orderDetail.items.reduce(
+        (sum, item) => sum + item.itemPrice * item.quantity,
+        0,
+      )
+    : 0;
+  const tax = Math.round(subtotal * TAX_RATE);
+  const total = subtotal + DELIVERY_FEE + tax;
 
   return (
     <div className="track-order-page">
@@ -158,11 +169,21 @@ export default function TrackOrderPage() {
               </div>
             ))}
 
+            <div className="track-order-details-row">
+              <span>Delivery Fee</span>
+              <strong>{formatPrice(DELIVERY_FEE)}</strong>
+            </div>
+
+            <div className="track-order-details-row">
+              <span>Tax (8%)</span>
+              <strong>{formatPrice(tax)}</strong>
+            </div>
+
             <div className="track-order-details-divider" />
 
             <div className="track-order-details-row track-order-details-total">
               <span>Total</span>
-              <strong>{formatPrice(orderDetail.totalAmount)}</strong>
+              <strong>{formatPrice(total)}</strong>
             </div>
           </div>
         </div>
