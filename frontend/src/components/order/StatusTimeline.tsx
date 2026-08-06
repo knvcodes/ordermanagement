@@ -17,12 +17,15 @@ export default function StatusTimeline({ status }: StatusTimelineProps) {
   const isCancelled = status === "CANCELLED";
   const currentIndex = isCancelled ? -1 : STATUS_STEPS.indexOf(status);
 
-  // FIX: Use currentIndex + 1 so DELIVERED (index 3) gets progress-4 (100%)
-  // ORDER_RECEIVED (index 0) gets progress-1 (25%), etc.
+  // Progress class matches currentIndex directly:
+  // 0 = ORDER_RECEIVED (0% width)
+  // 1 = PREPARING (25% width)
+  // 2 = OUT_FOR_DELIVERY (50% width)
+  // 3 = DELIVERED (75% width)
   const progressModifier = isCancelled
     ? " status-timeline-progress-cancelled"
     : currentIndex >= 0
-      ? ` status-timeline-progress-${currentIndex + 1}`
+      ? ` status-timeline-progress-${currentIndex}`
       : "";
 
   return (
@@ -50,7 +53,7 @@ export default function StatusTimeline({ status }: StatusTimelineProps) {
             circleState = "active";
           }
 
-          // FIX: When DELIVERED (last step), mark it as completed, not active
+          // DELIVERED (last step) should show as completed, not active
           const isLastStep = index === STATUS_STEPS.length - 1;
           if (!isCancelled && isLastStep && index === currentIndex) {
             circleState = "completed";

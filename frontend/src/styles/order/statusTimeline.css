@@ -2,24 +2,26 @@
   @apply relative;
 }
 
-.status-timeline-track,
-.status-timeline-progress {
-  @apply absolute rounded-full z-0;
+/* Grey background track - always full width between circle centers */
+.status-timeline-track {
+  @apply absolute rounded-full z-0 bg-gray-200;
   top: 1.125rem;
   left: 12.5%;
+  width: 75%;
   height: 4px;
-  width: 75%; /* both track and progress share same width */
 }
 
-.status-timeline-track {
-  @apply bg-gray-200;
-}
-
+/* Green progress fill - starts at 0% and grows */
 .status-timeline-progress {
-  @apply bg-success transition-all duration-700 ease-in-out;
+  @apply absolute rounded-full z-0 bg-success transition-all duration-700 ease-in-out;
+  top: 1.125rem;
+  left: 12.5%;
+  width: 0%;
+  height: 4px;
 }
 
-/* Progress fills - 0% to 100% of the 75% track width */
+/* 4 steps, 3 gaps between them. Track is 75% of container.
+   0% = at first circle, 25% = at second, 50% = at third, 75% = at fourth */
 .status-timeline-progress-0 {
   width: 0%;
 }
@@ -34,11 +36,6 @@
 
 .status-timeline-progress-3 {
   width: 75%;
-}
-
-/* FIX: 100% of the track width (not container width) */
-.status-timeline-progress-4 {
-  width: 100%;
 }
 
 .status-timeline-progress-cancelled {

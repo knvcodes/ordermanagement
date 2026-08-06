@@ -52,4 +52,4 @@ Content-Type: application/json
 
 
 ### menu listing api
-GET {{baseUrl}}/api/menu/list?page=1&limit=10
+GET {{baseUrl}}/api/menu/list?category=Drink&page=1&limit=10
