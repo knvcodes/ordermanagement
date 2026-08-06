@@ -55,7 +55,7 @@ export function useOrderSSE(orderId: string | null): UseOrderSSEReturn {
     disconnect();
 
     const eventSource = new EventSource(
-      `http://localhost:3000/api/sse/order/${orderId}`,
+      `${import.meta.env.VITE_API_BASE_URL}/sse/order/${orderId}`,
     );
 
     eventSourceRef.current = eventSource;

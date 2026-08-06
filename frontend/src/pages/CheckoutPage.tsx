@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../store/cartStore";
 import type {
@@ -21,11 +21,12 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
 
   const [placedOrder, setPlacedOrder] = useState<OrderPlacedData | null>(null);
+  const isSubmittingRef = useRef(false);
 
   // order provider
   const orderProvider = useOrderData();
 
-  if (items.length === 0 && !placedOrder) {
+  if (items.length === 0 && !placedOrder && !orderProvider.isCreating) {
     return (
       <EmptyState
         title="Your cart is empty"
@@ -37,6 +38,12 @@ export default function CheckoutPage() {
   }
 
   const handleSubmit = (data: DeliveryFormData) => {
+    if (isSubmittingRef.current || orderProvider.isCreating) {
+      return;
+    }
+
+    isSubmittingRef.current = true;
+
     const deliveryInfo: DeliveryInfo = {
       name: data.name,
       address: data.address,
@@ -59,14 +66,16 @@ export default function CheckoutPage() {
         onSuccess: (response: OrderPlaceResponse) => {
           console.log("Order response:", response);
           setPlacedOrder(response.data);
+          clearCart();
+        },
+        onSettled: () => {
+          isSubmittingRef.current = false;
         },
       },
     );
-
-    clearCart();
   };
 
-  if (placedOrder) {
+  if (placedOrder && !orderProvider.isCreating) {
     return <CheckoutSuccess order={placedOrder} />;
   }
 
@@ -75,7 +84,10 @@ export default function CheckoutPage() {
       <h1 className="checkout-page-title">Checkout</h1>
       <div className="checkout-page-grid">
         <div className="checkout-page-form">
-          <DeliveryForm onSubmit={handleSubmit} />
+          <DeliveryForm
+            onSubmit={handleSubmit}
+            isCreating={orderProvider.isCreating}
+          />
         </div>
         <div className="checkout-page-review">
           <OrderReview />

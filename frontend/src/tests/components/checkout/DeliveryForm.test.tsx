@@ -11,7 +11,7 @@ describe("DeliveryForm", () => {
 
     render(
       <MemoryRouter>
-        <DeliveryForm onSubmit={onSubmit} />
+        <DeliveryForm onSubmit={onSubmit} isCreating={false} />
       </MemoryRouter>,
     );
 
@@ -34,7 +34,7 @@ describe("DeliveryForm", () => {
 
     render(
       <MemoryRouter>
-        <DeliveryForm onSubmit={onSubmit} />
+        <DeliveryForm onSubmit={onSubmit} isCreating={false} />
       </MemoryRouter>,
     );
 
@@ -60,5 +60,16 @@ describe("DeliveryForm", () => {
       }),
       expect.anything(),
     );
+  });
+
+  it("shows a spinner and disables repeat submissions while creating an order", () => {
+    render(
+      <MemoryRouter>
+        <DeliveryForm onSubmit={vi.fn()} isCreating />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("status", { name: "Loading" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /placing order/i })).toBeDisabled();
   });
 });
