@@ -5,7 +5,6 @@ import {
   type DeliveryFormData,
 } from "../../validations/order";
 import "../../styles/checkout/deliveryForm.css";
-import Spinner from "../common/Spinner";
 
 interface DeliveryFormProps {
   onSubmit: (data: DeliveryFormData) => void;
